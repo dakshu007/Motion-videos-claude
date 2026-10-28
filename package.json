@@ -1,0 +1,26 @@
+{
+  "name": "motion-videos-claude",
+  "version": "1.0.0",
+  "description": "Script-driven 3D animated skits (Three.js + headless Chromium + ffmpeg)",
+  "scripts": {
+    "render": "node render.mjs",
+    "draft": "node render.mjs --draft",
+    "preview": "node server.mjs",
+    "tts": "node tools/tts-elevenlabs.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dakshu007/Motion-videos-claude.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dakshu007/Motion-videos-claude/issues"
+  },
+  "homepage": "https://github.com/dakshu007/Motion-videos-claude#readme",
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "playwright": "^1.63.0",
+    "three": "^0.186.1"
+  },
+  "type": "module",
+  "private": true
+}

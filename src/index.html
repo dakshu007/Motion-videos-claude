@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Motion Skit Preview</title>
+<style>
+  @font-face { font-family: Inter; font-weight: 600; src: url(/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(/node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Inter; font-weight: 800; src: url(/node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2) format('woff2'); }
+  html, body { margin: 0; background: #111; color: #ddd; font: 14px Inter, system-ui, sans-serif; }
+  #wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px; }
+  #out { height: calc(100vh - 90px); aspect-ratio: 9 / 16; background: #000; border-radius: 8px; }
+  #bar { display: flex; gap: 10px; align-items: center; width: min(560px, 95vw); }
+  #bar input[type=range] { flex: 1; }
+  button { background: #2a2a30; color: #eee; border: 1px solid #444; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  body.capture #bar { display: none; }
+  body.capture #wrap { padding: 0; }
+  body.capture #out { height: auto; border-radius: 0; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="out" width="720" height="1280"></canvas>
+  <div id="bar">
+    <button id="play">Play</button>
+    <input id="seek" type="range" min="0" max="1" step="0.001" value="0">
+    <span id="time">0.0s</span>
+  </div>
+</div>
+<script type="module">
+import { Engine } from './engine.js';
+
+const engine = new Engine(document.getElementById('out'));
+window.__engine = engine;
+const params = new URLSearchParams(location.search);
+
+if (params.has('capture')) {
+  document.body.classList.add('capture');
+  window.__ready = true; // render.mjs calls __engine.load()/frame() itself
+} else {
+  const url = params.get('script') || '/scripts/example.json';
+  const script = await (await fetch(url)).json();
+  // Audio for preview: per-beat files referenced in the script (if any).
+  const audioInfo = {};
+  const players = {};
+  await Promise.all(script.beats.map(async (b, i) => {
+    if (!b.audio) return;
+    const el = new Audio('/' + b.audio.replace(/^\//, ''));
+    await new Promise((res) => { el.onloadedmetadata = res; el.onerror = res; });
+    if (isFinite(el.duration)) { audioInfo[i] = { duration: el.duration }; players[i] = el; }
+  }));
+  const info = await engine.load(script, audioInfo);
+  const seek = document.getElementById('seek'), timeEl = document.getElementById('time'), btn = document.getElementById('play');
+  let playing = false, t0 = 0, startT = 0, t = 0, lastBeat = -1;
+  const draw = () => {
+    const i = engine.frame(t);
+    if (playing && i !== lastBeat && players[i]) { players[i].currentTime = 0; players[i].play(); }
+    lastBeat = i;
+    seek.value = t / info.duration; timeEl.textContent = t.toFixed(1) + 's';
+  };
+  const loop = (now) => {
+    if (!playing) return;
+    t = startT + (now - t0) / 1000;
+    if (t >= info.duration) { t = info.duration; playing = false; btn.textContent = 'Play'; }
+    draw();
+    requestAnimationFrame(loop);
+  };
+  btn.onclick = () => {
+    playing = !playing; btn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) { if (t >= info.duration) t = 0; startT = t; t0 = performance.now(); lastBeat = -1; requestAnimationFrame(loop); }
+    else Object.values(players).forEach((p) => p.pause());
+  };
+  seek.oninput = () => { t = seek.value * info.duration; draw(); };
+  draw();
+  window.__previewReady = true;
+}
+</script>
+</body>
+</html>
