@@ -8,15 +8,19 @@
 //   node render.mjs scripts/office-launch.json --draft      (half-res, no MSAA: ~4x faster)
 //   node render.mjs scripts/office-launch.json --gpu        (use the machine's GPU)
 //
-// Pipeline: script JSON -> per-line voice audio (your files, or generated
-// babble) -> headless Chromium renders each frame with Three.js -> ffmpeg
+//   node render.mjs scripts/office-launch.json --babble     (skip Kokoro voices, use babble)
+//
+// Pipeline: script JSON -> per-line voice audio (free Kokoro neural voices,
+// your own files, or babble) -> headless Chromium renders each frame with Three.js -> ffmpeg
 // encodes H.264 and mixes the dialogue (+ optional music) on the timeline.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn, execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { startServer } from './server.mjs';
+import crypto from 'node:crypto';
 import { babble, writeWav } from './tools/babble.mjs';
+import { kokoroToWav } from './tools/kokoro.mjs';
 import { validateScript } from './src/validate.js';
 
 const args = process.argv.slice(2);
@@ -62,19 +66,45 @@ function envelope(file) {
 
 const audioInfo = {};
 const audioFiles = {};
-script.beats.forEach((b, i) => {
-  if (!b.text || !b.speaker) return;
+const hash = (o) => crypto.createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
+let kokoroDown = args.includes('--babble') ? 'skipped (--babble)' : null;
+for (const [i, b] of script.beats.entries()) {
+  if (!b.text || !b.speaker) continue;
   let file = b.audio;
-  if (!file) {
-    const voice = normalized.cast[b.speaker]?.voice;
-    if (!voice || voice.type !== 'babble') return;
-    file = path.join(cacheDir, `babble_${i}.wav`);
-    writeWav(file, babble(b.text, { pitch: voice.pitch, speed: voice.speed, wave: voice.wave, seed: i + 1 }));
+  const voice = normalized.cast[b.speaker]?.voice;
+  if (!file && voice?.type === 'kokoro' && !kokoroDown) {
+    // Free neural voice (Kokoro). Cached per line, so re-renders are instant.
+    file = path.join(cacheDir, `kokoro_${hash([voice, b.tts || b.text])}.wav`);
+    if (!fs.existsSync(file)) {
+      try {
+        const raw = file.replace(/\.wav$/, '.raw.wav');
+        await kokoroToWav(raw, b.tts || b.text, { voice: voice.voice || 'af_heart', speed: voice.speed || 1 });
+        const k = voice.shift || 1; // pitch multiplier (e.g. 1.3 for a squeaky mascot), duration kept
+        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', raw, '-af',
+          `asetrate=24000*${k},aresample=24000,atempo=${(1 / k).toFixed(4)},silenceremove=start_periods=1:start_threshold=-50dB`, file]);
+        fs.rmSync(raw);
+        process.stdout.write(`voice ${i + 1}/${script.beats.length} (${voice.voice})\r`);
+      } catch (e) {
+        kokoroDown = e.cause?.code || e.message.split('\n')[0];
+        file = null;
+      }
+    }
   }
-  if (!fs.existsSync(file)) { console.warn(`! missing audio for beat ${i}: ${file}`); return; }
+  if (!file && voice && (voice.type === 'babble' || voice.type === 'kokoro')) {
+    // Babble: offline gibberish; also the fallback when Kokoro can't load.
+    const female = /^[ab]f_/.test(voice.voice || '');
+    const pitch = voice.pitch || (voice.type === 'kokoro' ? (female ? 290 : 190) * (voice.shift || 1) : 260);
+    file = path.join(cacheDir, `babble_${i}.wav`);
+    writeWav(file, babble(b.text, { pitch, speed: voice.speed, wave: voice.wave, seed: i + 1 }));
+  }
+  if (!file) continue;
+  if (!fs.existsSync(file)) { console.warn(`! missing audio for beat ${i}: ${file}`); continue; }
   audioFiles[i] = file;
   audioInfo[i] = { duration: probeDuration(file), env: envelope(file) };
-});
+}
+if (kokoroDown && !args.includes('--babble')) {
+  console.warn(`! Kokoro voices unavailable (${kokoroDown}); used babble instead.\n  Kokoro downloads its model from huggingface.co on first use, so that host must be reachable once.`);
+}
 
 // ---- headless render -------------------------------------------------------
 const server = await startServer(0);

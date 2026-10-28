@@ -27,6 +27,15 @@ export const CHARACTER_TYPES = {
 };
 
 export const HAIR = ['long', 'bob', 'short', 'bun', 'ponytail'];
+
+// Free Kokoro neural voices (a = American, b = British; f = female, m = male).
+// The best-rated ones: af_heart, af_bella, af_nicole, bf_emma, am_michael, am_fenrir, am_puck, bm_george, bm_fable.
+export const KOKORO_VOICES = [
+  'af_heart', 'af_alloy', 'af_aoede', 'af_bella', 'af_jessica', 'af_kore', 'af_nicole', 'af_nova', 'af_river', 'af_sarah', 'af_sky',
+  'am_adam', 'am_echo', 'am_eric', 'am_fenrir', 'am_liam', 'am_michael', 'am_onyx', 'am_puck', 'am_santa',
+  'bf_emma', 'bf_isabella', 'bf_alice', 'bf_lily', 'bm_george', 'bm_lewis', 'bm_daniel', 'bm_fable',
+];
+export const VOICE_TYPES = ['kokoro', 'babble', 'elevenlabs'];
 export const OUTFITS = ['sweater', 'hoodie', 'tee', 'apron', 'blazer'];
 export const ACCESSORIES = ['glasses', 'headphones', 'chefHat', 'cap', 'bow'];
 

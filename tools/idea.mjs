@@ -34,7 +34,7 @@ Output ONLY a JSON object (no prose, no code fences) with this shape:
   "set": one of the sets,
   "time": starting time of day,
   "setOptions": { "sign": "short neon sign text" }   // optional
-  "cast": { "<id>": { "type": ..., "name": "Display name", ...appearance, "voice": { "type": "babble", "pitch": number } } },
+  "cast": { "<id>": { "type": ..., "name": "Display name", ...appearance, "voice": { "type": "kokoro", "voice": "af_heart" } } },
   "beats": [ { "speaker": "<id>", "text": "...", "expr": ..., "action": ..., "shot": ..., ...optional fields } ]
 }
 
@@ -46,7 +46,9 @@ Character types:
 ${list(vocab.CHARACTER_TYPES)}
 Human options: hair (${vocab.HAIR.join(', ')}), hairColor, skin (any skin tone hex), top (hex), outfit (${vocab.OUTFITS.join(', ')}), apron (hex), pants (hex), eyeColor, lashes (true/false), accessories (${vocab.ACCESSORIES.join(', ')}), accent (hex for headphones/cap).
 Mascot options: color (hex), accent (hex), size (0.8-1.3).
-Voice: { "type": "babble", "pitch": 160-400, "speed": 0.9-1.2, "wave": "square" for robots/cubes }.
+Voice (free neural TTS): { "type": "kokoro", "voice": one of ${vocab.KOKORO_VOICES.join(', ')}, "speed": 0.9-1.15, "shift": pitch multiplier }.
+Voice ids: a=American, b=British, f=female, m=male; best: af_heart, af_bella, af_nicole, bf_emma, am_michael, am_fenrir, am_puck, bm_george, bm_fable.
+Give every character a different voice. Mascots sound great with a higher "shift" (1.15-1.35); robots can use am_echo or am_onyx with shift 1.1.
 
 BEAT FIELDS:
 - speaker: cast id (their mouth moves, the caption shows "text"). Omit speaker and text for a silent establishing beat (then give "duration" seconds).

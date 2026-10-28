@@ -12,7 +12,7 @@ Every video can be a different concept. You pick:
 - **a story:** beats with expressions, actions, shots, time-of-day jumps, and what's on the screen
 
 ```
-idea ──(tools/idea.mjs + Claude)──► script.json ──► voices (babble / ElevenLabs / your files)
+idea ──(tools/idea.mjs + Claude)──► script.json ──► free Kokoro voices (or your files / babble)
                                           └──► headless Chromium + Three.js renders every frame ──► ffmpeg ──► out/*.mp4
 ```
 
@@ -118,13 +118,38 @@ vocabulary lives in `src/vocab.js`.
 The camera picks its angle for character shots by casting rays. It avoids angles where props,
 arms or other characters would block the face, so the same script works across all the sets.
 
-## Voices
+## Voices (free)
 
-- **babble**: offline gibberish speech generated from the text (Animal-Crossing style). It's free, and the mouths sync to it.
-- **ElevenLabs**: give each character `"voice": { "elevenlabs": "<voice_id>" }`, then
-  `ELEVENLABS_API_KEY=... npm run tts -- scripts/x.json` writes `scripts/x.voiced.json` to render.
-- **Your own recordings**: set `"audio": "audio/line3.mp3"` on any beat.
+The example scripts use **Kokoro**, a free open-source neural text-to-speech model
+(Kokoro-82M, Apache-2.0). It runs on your computer with no API key and no per-use cost.
 
+```jsonc
+"voice": { "type": "kokoro", "voice": "af_heart", "speed": 1.0, "shift": 1.0 }
+```
+
+- `voice`: 28 English voices. The prefix means **a** American / **b** British, **f** female / **m** male.
+  The best ones: `af_heart`, `af_bella`, `af_nicole`, `bf_emma`, `am_michael`, `am_fenrir`, `am_puck`, `bm_george`, `bm_fable`.
+- `shift`: pitch multiplier that keeps the timing. 1.15–1.35 makes a cute mascot voice.
+- `speed`: talking speed.
+
+The first render downloads the model (~90 MB) from huggingface.co and caches it. After
+that it works offline. Each line is cached too, so re-renders don't regenerate voices.
+To hear voices:
+
+```bash
+npm run voices -- --list                                  # list all voices
+npm run voices -- "Hey, I made you a video!" --voice am_puck   # → out/voice-samples/am_puck.wav
+```
+
+If Kokoro can't load (e.g. no internet on the first run), the renderer falls back to
+**babble**, which is offline gibberish synthesized from the text, so a render never fails over voices.
+Pass `--babble` to use babble on purpose. Other options:
+
+- **Your own recordings**: `"audio": "audio/line3.mp3"` on any beat.
+- **ElevenLabs** (paid): `"voice": { "elevenlabs": "<voice_id>" }`, then
+  `ELEVENLABS_API_KEY=... npm run tts -- scripts/x.json`.
+
+Mouths lip-sync to whichever audio is used, and beat timing stretches to fit it.
 Optional background music: `"music": "audio/lofi.mp3", "musicVolume": 0.2`.
 
 ## Project layout
@@ -141,7 +166,8 @@ src/characters/faces.js   expressions + face painters
 src/sets/common.js        sky, time-of-day presets, screens, room/prop/light helpers
 src/sets/*.js             office, cafe, kitchen, bedroom, park, studio
 tools/idea.mjs            idea → script with Claude
-tools/babble.mjs          gibberish voice synth
+tools/kokoro.mjs          free neural voices (Kokoro)
+tools/babble.mjs          gibberish voice synth (fallback)
 tools/tts-elevenlabs.mjs  real voices
 ```
 

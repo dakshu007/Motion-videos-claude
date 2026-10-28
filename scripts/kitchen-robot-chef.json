@@ -3,8 +3,8 @@
   "set": "kitchen",
   "time": "day",
   "cast": {
-    "sam": {"type": "human", "name": "Sam", "hair": "short", "hairColor": "#2b1d14", "skin": "#d9a17e", "top": "#e85d4a", "outfit": "tee", "accessories": ["chefHat"], "voice": {"type": "babble", "pitch": 210}},
-    "chip": {"type": "robot", "name": "Chip", "voice": {"type": "babble", "pitch": 240, "wave": "square", "speed": 1.15}}
+    "sam": {"type": "human", "name": "Sam", "hair": "short", "hairColor": "#2b1d14", "skin": "#d9a17e", "top": "#e85d4a", "outfit": "tee", "accessories": ["chefHat"], "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "chip": {"type": "robot", "name": "Chip", "voice": {"type": "kokoro", "voice": "am_echo", "shift": 1.15, "speed": 1.05}}
   },
   "beats": [
     {"speaker": "sam", "text": "Chip, I'm making breakfast.", "expr": "happy", "action": "cook", "screen": {"mode": "recipe", "title": "Omelette", "lines": ["3 eggs", "butter", "cheese", "salt + pepper"]}},

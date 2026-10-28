@@ -3,8 +3,8 @@
   "set": "office",
   "time": "dusk",
   "cast": {
-    "girl": {"type": "human", "name": "Maya", "hair": "long", "voice": {"type": "babble", "pitch": 300, "speed": 1.0}},
-    "cube": {"type": "cube", "name": "Bit", "voice": {"type": "babble", "pitch": 170, "speed": 1.1, "wave": "square"}}
+    "girl": {"type": "human", "name": "Maya", "hair": "long", "voice": {"type": "kokoro", "voice": "af_heart"}},
+    "cube": {"type": "cube", "name": "Bit", "voice": {"type": "kokoro", "voice": "am_puck", "shift": 1.2, "speed": 1.05}}
   },
   "beats": [
     {"speaker": "girl", "text": "Bit, build me a landing page.", "expr": "neutral", "action": "typing", "shot": "close", "screen": {"mode": "blank", "title": "landing-page"}},

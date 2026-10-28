@@ -3,9 +3,9 @@
   "set": "park",
   "time": "day",
   "cast": {
-    "ana": {"type": "human", "name": "Ana", "hair": "ponytail", "hairColor": "#c98a4b", "top": "#ffd166", "outfit": "tee", "accessories": ["glasses"], "voice": {"type": "babble", "pitch": 300}},
-    "mo": {"type": "human", "name": "Mo", "hair": "short", "hairColor": "#2a1c14", "skin": "#b97a56", "top": "#6aa5d8", "outfit": "hoodie", "lashes": false, "voice": {"type": "babble", "pitch": 170}},
-    "bit": {"type": "cube", "name": "Bit", "voice": {"type": "babble", "pitch": 230, "wave": "square", "speed": 1.1}}
+    "ana": {"type": "human", "name": "Ana", "hair": "ponytail", "hairColor": "#c98a4b", "top": "#ffd166", "outfit": "tee", "accessories": ["glasses"], "voice": {"type": "kokoro", "voice": "af_sarah"}},
+    "mo": {"type": "human", "name": "Mo", "hair": "short", "hairColor": "#2a1c14", "skin": "#b97a56", "top": "#6aa5d8", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_liam"}},
+    "bit": {"type": "cube", "name": "Bit", "voice": {"type": "kokoro", "voice": "am_puck", "shift": 1.2, "speed": 1.05}}
   },
   "beats": [
     {"speaker": "mo", "text": "You've been inside for 40 days.", "expr": "worried", "action": "gesture", "ana": {"action": "typing"}},

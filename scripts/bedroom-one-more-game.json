@@ -3,8 +3,8 @@
   "set": "bedroom",
   "time": "night",
   "cast": {
-    "leo": {"type": "human", "name": "Leo", "hair": "short", "hairColor": "#1d1a1a", "skin": "#e8b896", "top": "#4b4f9e", "outfit": "hoodie", "accessories": ["headphones"], "accent": "#e5484d", "voice": {"type": "babble", "pitch": 200}},
-    "goo": {"type": "blob", "name": "Goo", "voice": {"type": "babble", "pitch": 340, "speed": 1.2}}
+    "leo": {"type": "human", "name": "Leo", "hair": "short", "hairColor": "#1d1a1a", "skin": "#e8b896", "top": "#4b4f9e", "outfit": "hoodie", "accessories": ["headphones"], "accent": "#e5484d", "voice": {"type": "kokoro", "voice": "am_fenrir"}},
+    "goo": {"type": "blob", "name": "Goo", "voice": {"type": "kokoro", "voice": "af_nicole", "shift": 1.3}}
   },
   "beats": [
     {"speaker": "leo", "text": "One more game. Then sleep.", "expr": "determined", "action": "typing", "screen": {"mode": "game", "title": "SCORE"}},

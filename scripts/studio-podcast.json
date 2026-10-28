@@ -4,9 +4,9 @@
   "time": "night",
   "setOptions": {"sign": "AI & CHILL"},
   "cast": {
-    "host": {"type": "human", "name": "Rae", "hair": "bob", "hairColor": "#1f1a1c", "top": "#c0573a", "outfit": "blazer", "accessories": ["headphones"], "voice": {"type": "babble", "pitch": 270}},
-    "guest": {"type": "human", "name": "Nina", "hair": "long", "hairColor": "#8a4b2a", "top": "#7fa36a", "outfit": "sweater", "accessories": ["glasses"], "voice": {"type": "babble", "pitch": 320}},
-    "chip": {"type": "robot", "name": "Chip", "accent": "#ff8fd8", "voice": {"type": "babble", "pitch": 240, "wave": "square", "speed": 1.15}}
+    "host": {"type": "human", "name": "Rae", "hair": "bob", "hairColor": "#1f1a1c", "top": "#c0573a", "outfit": "blazer", "accessories": ["headphones"], "voice": {"type": "kokoro", "voice": "af_nova"}},
+    "guest": {"type": "human", "name": "Nina", "hair": "long", "hairColor": "#8a4b2a", "top": "#7fa36a", "outfit": "sweater", "accessories": ["glasses"], "voice": {"type": "kokoro", "voice": "bf_isabella"}},
+    "chip": {"type": "robot", "name": "Chip", "accent": "#ff8fd8", "voice": {"type": "kokoro", "voice": "bm_george", "shift": 1.15}}
   },
   "beats": [
     {"speaker": "host", "text": "Welcome back to AI and Chill!", "expr": "joy", "action": "wave", "shot": "wide2", "screen": {"mode": "live", "title": "AI & Chill #42", "value": 1840}},

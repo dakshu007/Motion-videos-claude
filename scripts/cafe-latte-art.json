@@ -3,8 +3,8 @@
   "set": "cafe",
   "time": "day",
   "cast": {
-    "jess": {"type": "human", "name": "Jess", "hair": "bun", "hairColor": "#3b2a20", "top": "#f3ebdd", "outfit": "apron", "apron": "#2f5d50", "voice": {"type": "babble", "pitch": 290}},
-    "mochi": {"type": "cat", "name": "Mochi", "voice": {"type": "babble", "pitch": 380, "speed": 1.1}}
+    "jess": {"type": "human", "name": "Jess", "hair": "bun", "hairColor": "#3b2a20", "top": "#f3ebdd", "outfit": "apron", "apron": "#2f5d50", "voice": {"type": "kokoro", "voice": "af_bella"}},
+    "mochi": {"type": "cat", "name": "Mochi", "voice": {"type": "kokoro", "voice": "bf_emma", "shift": 1.15}}
   },
   "beats": [
     {"speaker": "jess", "text": "Okay Mochi. Latte art. Watch this.", "expr": "determined", "action": "gesture", "screen": {"mode": "stat", "label": "Orders today", "value": 12}},

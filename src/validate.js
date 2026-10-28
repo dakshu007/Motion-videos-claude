@@ -1,7 +1,7 @@
 // Script normalization + validation. Runs in the browser (engine) and in
 // Node (render.mjs, tools/idea.mjs), so it only depends on vocab.js.
 import {
-  SETS, SLOTS, CHARACTER_TYPES, HAIR, OUTFITS, ACCESSORIES, EXPRESSION_NAMES, HUMAN_ACTIONS,
+  SETS, SLOTS, CHARACTER_TYPES, KOKORO_VOICES, VOICE_TYPES, HAIR, OUTFITS, ACCESSORIES, EXPRESSION_NAMES, HUMAN_ACTIONS,
   MASCOT_ACTIONS, SHOTS, SHOT_ALIASES, MOVES, TIME_NAMES, TRANSITIONS, SCREEN_MODES, BEAT_FIELDS,
 } from './vocab.js';
 
@@ -50,6 +50,11 @@ export function validateScript(src) {
     if (!SLOTS[c.slot]) err(`cast.${id}.slot "${c.slot}" is unknown (${Object.keys(SLOTS).join(', ')})`);
     if (slots[c.slot]) err(`cast.${id} and cast.${slots[c.slot]} are both in slot "${c.slot}"`);
     slots[c.slot] = id;
+    if (c.voice) {
+      const vt = c.voice.type || (c.voice.elevenlabs ? 'elevenlabs' : 'babble');
+      if (!VOICE_TYPES.includes(vt)) err(`cast.${id}.voice.type "${vt}" is unknown (${VOICE_TYPES.join(', ')})`);
+      if (vt === 'kokoro' && c.voice.voice && !KOKORO_VOICES.includes(c.voice.voice)) err(`cast.${id}.voice.voice "${c.voice.voice}" is not a Kokoro voice (${KOKORO_VOICES.join(', ')})`);
+    }
     if (c.type === 'human') {
       if (c.hair && !HAIR.includes(c.hair)) err(`cast.${id}.hair "${c.hair}" is unknown (${HAIR.join(', ')})`);
       if (c.outfit && !OUTFITS.includes(c.outfit)) err(`cast.${id}.outfit "${c.outfit}" is unknown (${OUTFITS.join(', ')})`);
