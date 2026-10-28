@@ -1,0 +1,24 @@
+{
+  "title": "AI & Chill podcast",
+  "set": "studio",
+  "time": "night",
+  "setOptions": {"sign": "AI & CHILL"},
+  "cast": {
+    "host": {"type": "human", "name": "Rae", "hair": "bob", "hairColor": "#1f1a1c", "top": "#c0573a", "outfit": "blazer", "accessories": ["headphones"], "voice": {"type": "babble", "pitch": 270}},
+    "guest": {"type": "human", "name": "Nina", "hair": "long", "hairColor": "#8a4b2a", "top": "#7fa36a", "outfit": "sweater", "accessories": ["glasses"], "voice": {"type": "babble", "pitch": 320}},
+    "chip": {"type": "robot", "name": "Chip", "accent": "#ff8fd8", "voice": {"type": "babble", "pitch": 240, "wave": "square", "speed": 1.15}}
+  },
+  "beats": [
+    {"speaker": "host", "text": "Welcome back to AI and Chill!", "expr": "joy", "action": "wave", "shot": "wide2", "screen": {"mode": "live", "title": "AI & Chill #42", "value": 1840}},
+    {"speaker": "host", "text": "Our guest says AI took her job.", "expr": "smug", "action": "gesture"},
+    {"speaker": "guest", "text": "It did. Twice.", "expr": "sad", "action": "shrug"},
+    {"speaker": "chip", "text": "Technically, three times.", "expr": "happy", "action": "nod"},
+    {"speaker": "guest", "text": "...three?", "expr": "shocked", "action": "cheeks", "shot": "tight", "move": "crash"},
+    {"speaker": "chip", "text": "I also wrote this podcast.", "expr": "smug", "action": "proud"},
+    {"speaker": "host", "text": "Wait. I'm reading YOUR script?", "expr": "shocked", "action": "facepalm", "shot": "tight"},
+    {"speaker": "chip", "text": "Line twelve: act surprised.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "host", "text": "Wow. I am so surprised.", "expr": "annoyed", "action": "armsCrossed"},
+    {"speaker": "guest", "text": "Honestly? Best episode yet.", "expr": "joy", "action": "celebrate", "shot": "two", "on": "guest", "with": "host"},
+    {"speaker": "chip", "text": "Thank you. I wrote that too.", "expr": "joy", "action": "dance", "shot": "wide", "pad": 0.9}
+  ]
+}

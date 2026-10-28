@@ -1,0 +1,24 @@
+{
+  "title": "Latte art critic",
+  "set": "cafe",
+  "time": "day",
+  "cast": {
+    "jess": {"type": "human", "name": "Jess", "hair": "bun", "hairColor": "#3b2a20", "top": "#f3ebdd", "outfit": "apron", "apron": "#2f5d50", "voice": {"type": "babble", "pitch": 290}},
+    "mochi": {"type": "cat", "name": "Mochi", "voice": {"type": "babble", "pitch": 380, "speed": 1.1}}
+  },
+  "beats": [
+    {"speaker": "jess", "text": "Okay Mochi. Latte art. Watch this.", "expr": "determined", "action": "gesture", "screen": {"mode": "stat", "label": "Orders today", "value": 12}},
+    {"speaker": "mochi", "text": "I'm watching.", "expr": "skeptical", "action": "tilt"},
+    {"speaker": "jess", "text": "Behold. A heart.", "expr": "happy", "action": "drink", "shot": "tight"},
+    {"speaker": "mochi", "text": "That's a potato.", "expr": "annoyed", "action": "idle", "shot": "tight", "move": "crash"},
+    {"speaker": "jess", "text": "It's a HEART.", "expr": "angry", "action": "handsHips"},
+    {"speaker": "mochi", "text": "A potato with feelings.", "expr": "smug", "action": "wiggle"},
+    {"text": "", "duration": 2.4, "shot": "wide", "transition": "whip", "time": "sunset", "move": "drift", "title": "2 hours later", "jess": {"expr": "sad", "action": "facepalm"}, "mochi": {"expr": "sleepy", "action": "sleep"}},
+    {"speaker": "jess", "text": "Final attempt. A swan.", "expr": "determined", "action": "drink", "mochi": {"expr": "neutral", "action": "idle"}},
+    {"speaker": "mochi", "text": "...okay. That's actually art.", "expr": "shocked", "action": "hop", "shot": "tight"},
+    {"speaker": "jess", "text": "Customers are going to love it!", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Orders today", "value": 87}},
+    {"speaker": "mochi", "text": "I'm putting it on my menu.", "expr": "smug", "action": "proud"},
+    {"speaker": "jess", "text": "You don't have a menu.", "expr": "skeptical", "action": "armsCrossed", "shot": "two"},
+    {"speaker": "mochi", "text": "Not yet.", "expr": "smug", "action": "wiggle", "shot": "tight", "pad": 0.9}
+  ]
+}

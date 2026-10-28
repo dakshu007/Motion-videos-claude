@@ -1,0 +1,22 @@
+{
+  "title": "One more game",
+  "set": "bedroom",
+  "time": "night",
+  "cast": {
+    "leo": {"type": "human", "name": "Leo", "hair": "short", "hairColor": "#1d1a1a", "skin": "#e8b896", "top": "#4b4f9e", "outfit": "hoodie", "accessories": ["headphones"], "accent": "#e5484d", "voice": {"type": "babble", "pitch": 200}},
+    "goo": {"type": "blob", "name": "Goo", "voice": {"type": "babble", "pitch": 340, "speed": 1.2}}
+  },
+  "beats": [
+    {"speaker": "leo", "text": "One more game. Then sleep.", "expr": "determined", "action": "typing", "screen": {"mode": "game", "title": "SCORE"}},
+    {"speaker": "goo", "text": "You said that six games ago.", "expr": "skeptical", "action": "bounce"},
+    {"speaker": "leo", "text": "This time I mean it.", "expr": "smug", "action": "typing", "shot": "overShoulder"},
+    {"text": "", "duration": 2.4, "shot": "wide", "transition": "whip", "time": "dawn", "title": "5 hours later", "move": "drift", "leo": {"expr": "determined", "action": "typing"}, "goo": {"expr": "sleepy", "action": "sleep"}},
+    {"speaker": "goo", "text": "Is that... the sun?", "expr": "shocked", "action": "hop"},
+    {"speaker": "leo", "text": "Impossible. I only blinked.", "expr": "shocked", "action": "cheeks", "shot": "tight"},
+    {"speaker": "leo", "text": "But I WON!", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Win streak", "value": 12}},
+    {"speaker": "goo", "text": "And your 9 AM meeting?", "expr": "worried", "action": "tilt", "shot": "tight"},
+    {"speaker": "leo", "text": "...", "expr": "sad", "action": "facepalm", "duration": 1.6},
+    {"speaker": "goo", "text": "One more game?", "expr": "smug", "action": "wiggle"},
+    {"speaker": "leo", "text": "One more game.", "expr": "determined", "action": "typing", "shot": "medium", "pad": 0.9}
+  ]
+}

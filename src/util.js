@@ -79,20 +79,12 @@ export function stripeTexture(lines = 64, vertical = true) {
   }, { linear: true, repeat: [1, 1] });
 }
 
-// Soft mottled noise for the "clay" look.
-export function clayTexture() {
-  return canvasTexture(256, 256, (ctx, w, h) => {
-    const img = ctx.createImageData(w, h);
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        const v = 128 + (noise(x * 0.11, y * 0.7) * 0.6 + noise(y * 0.13 + x * 0.05, 9) * 0.4) * 30;
-        const i = (y * w + x) * 4;
-        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-        img.data[i + 3] = 255;
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-  }, { linear: true, repeat: [2, 2] });
+// Darken (k < 1) or lighten toward white (k > 1) a hex color.
+export function shade(hex, k) {
+  const c = new THREE.Color(hex);
+  if (k <= 1) c.multiplyScalar(k);
+  else c.lerp(new THREE.Color('#ffffff'), Math.min(1, k - 1));
+  return '#' + c.getHexString();
 }
 
 export function clay(color, opts = {}) {

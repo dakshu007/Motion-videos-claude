@@ -1,0 +1,24 @@
+{
+  "title": "Touch grass",
+  "set": "park",
+  "time": "day",
+  "cast": {
+    "ana": {"type": "human", "name": "Ana", "hair": "ponytail", "hairColor": "#c98a4b", "top": "#ffd166", "outfit": "tee", "accessories": ["glasses"], "voice": {"type": "babble", "pitch": 300}},
+    "mo": {"type": "human", "name": "Mo", "hair": "short", "hairColor": "#2a1c14", "skin": "#b97a56", "top": "#6aa5d8", "outfit": "hoodie", "lashes": false, "voice": {"type": "babble", "pitch": 170}},
+    "bit": {"type": "cube", "name": "Bit", "voice": {"type": "babble", "pitch": 230, "wave": "square", "speed": 1.1}}
+  },
+  "beats": [
+    {"speaker": "mo", "text": "You've been inside for 40 days.", "expr": "worried", "action": "gesture", "ana": {"action": "typing"}},
+    {"speaker": "ana", "text": "And I shipped 40 features.", "expr": "smug", "action": "typing", "screen": {"mode": "stat", "label": "Features shipped", "value": 40}},
+    {"speaker": "mo", "text": "So today, we're touching grass.", "expr": "determined", "action": "point"},
+    {"speaker": "ana", "text": "Bit, how do I touch grass?", "expr": "skeptical", "action": "think", "look": "bit"},
+    {"speaker": "bit", "text": "Step one: close the laptop.", "expr": "happy", "action": "hop"},
+    {"speaker": "ana", "text": "Absolutely not.", "expr": "angry", "action": "armsCrossed", "shot": "tight", "move": "crash"},
+    {"speaker": "bit", "text": "Step two: look up.", "expr": "smug", "action": "proud"},
+    {"speaker": "ana", "text": "...oh. Birds.", "expr": "shocked", "action": "cheeks", "shot": "medium", "look": "camera", "move": "pull"},
+    {"speaker": "mo", "text": "Told you.", "expr": "joy", "action": "celebrate"},
+    {"speaker": "ana", "text": "Okay. This is actually nice.", "expr": "happy", "action": "idle", "shot": "two", "on": "ana", "with": "mo"},
+    {"speaker": "bit", "text": "I shipped feature 41 while you looked away.", "expr": "joy", "action": "dance"},
+    {"speaker": "ana", "text": "BIT!", "expr": "angry", "action": "facepalm", "shot": "tight", "move": "crash", "pad": 0.9}
+  ]
+}

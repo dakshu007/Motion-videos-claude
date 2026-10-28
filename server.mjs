@@ -43,7 +43,7 @@ export function startServer(port = 0) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT || 5173);
-  const script = process.argv[2] || 'scripts/example.json';
+  const script = process.argv[2] || 'scripts/office-launch.json';
   startServer(port).then(() => {
     console.log(`Preview: http://localhost:${port}/src/index.html?script=/${script}`);
   });

@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Render a skit script to MP4.
 //
-//   node render.mjs scripts/example.json out/example.mp4
-//   node render.mjs scripts/example.json --stills 1,5.5,12      (PNG frames for a quick look)
-//   node render.mjs scripts/example.json out/test.mp4 --from 4 --to 9
-//   node render.mjs scripts/example.json --draft      (half-res, no MSAA: ~4x faster)
-//   node render.mjs scripts/example.json --gpu        (use the machine's GPU)
+//   node render.mjs scripts/office-launch.json out/office-launch.mp4
+//   node render.mjs scripts/office-launch.json --stills 1,5.5,12      (PNG frames for a quick look)
+//   node render.mjs scripts/office-launch.json --storyboard           (one frame per beat, tiled)
+//   node render.mjs scripts/office-launch.json out/test.mp4 --from 4 --to 9
+//   node render.mjs scripts/office-launch.json --draft      (half-res, no MSAA: ~4x faster)
+//   node render.mjs scripts/office-launch.json --gpu        (use the machine's GPU)
 //
 // Pipeline: script JSON -> per-line voice audio (your files, or generated
 // babble) -> headless Chromium renders each frame with Three.js -> ffmpeg
@@ -16,18 +17,25 @@ import { spawn, execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { startServer } from './server.mjs';
 import { babble, writeWav } from './tools/babble.mjs';
+import { validateScript } from './src/validate.js';
 
 const args = process.argv.slice(2);
 const flag = (name, def) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : def; };
 const VALUE_FLAGS = ['--stills', '--from', '--to'];
 const positional = args.filter((a, i) => !a.startsWith('--') && !VALUE_FLAGS.includes(args[i - 1]));
-const scriptPath = positional[0] || 'scripts/example.json';
+const scriptPath = positional[0] || 'scripts/office-launch.json';
 const outPath = positional[1] || path.join('out', path.basename(scriptPath, '.json') + (args.includes('--draft') ? '.draft.mp4' : '.mp4'));
 const stills = flag('stills');
 const from = Number(flag('from', 0));
 const to = flag('to') ? Number(flag('to')) : null;
 
 const script = JSON.parse(fs.readFileSync(scriptPath, 'utf8'));
+const { errors, warnings, script: normalized } = validateScript(script);
+for (const w of warnings) console.warn(`warning: ${w}`);
+if (errors.length) {
+  for (const e of errors) console.error(`error: ${e}`);
+  if (!args.includes('--force')) { console.error('Fix the script (or pass --force to render anyway).'); process.exit(1); }
+}
 const fps = script.fps || 30;
 const cacheDir = path.join('out', '.cache', path.basename(scriptPath, '.json'));
 fs.mkdirSync(cacheDir, { recursive: true });
@@ -58,7 +66,7 @@ script.beats.forEach((b, i) => {
   if (!b.text || !b.speaker) return;
   let file = b.audio;
   if (!file) {
-    const voice = script.characters?.[b.speaker]?.voice;
+    const voice = normalized.cast[b.speaker]?.voice;
     if (!voice || voice.type !== 'babble') return;
     file = path.join(cacheDir, `babble_${i}.wav`);
     writeWav(file, babble(b.text, { pitch: voice.pitch, speed: voice.speed, wave: voice.wave, seed: i + 1 }));
@@ -97,6 +105,24 @@ const grab = (t, type = 'image/jpeg') => page.evaluate(([t, type]) => {
   window.__engine.frame(t);
   return document.getElementById('out').toDataURL(type, 0.94);
 }, [t, type]);
+
+// --storyboard: one frame from the middle of every beat, tiled into a single PNG.
+if (args.includes('--storyboard')) {
+  const dir = path.join(cacheDir, 'storyboard');
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
+  for (const [i, b] of info.beats.entries()) {
+    const url = await grab(b.start + b.duration * 0.55, 'image/png');
+    fs.writeFileSync(path.join(dir, `beat_${String(i).padStart(3, '0')}.png`), Buffer.from(url.split(',')[1], 'base64'));
+  }
+  await browser.close(); server.close();
+  const cols = Math.min(6, info.beats.length), rows = Math.ceil(info.beats.length / cols);
+  const sheet = path.join('out', `${path.basename(scriptPath, '.json')}_storyboard.png`);
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', '1', '-i', path.join(dir, 'beat_%03d.png'),
+    '-vf', `scale=270:-1,tile=${cols}x${rows}:padding=4:color=black`, '-frames:v', '1', sheet]);
+  console.log('wrote', sheet);
+  process.exit(0);
+}
 
 if (stills) {
   const dir = path.join('out', 'stills');

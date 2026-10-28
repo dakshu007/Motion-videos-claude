@@ -25,7 +25,7 @@ const model = script.ttsModel || 'eleven_multilingual_v2';
 
 for (const [i, b] of script.beats.entries()) {
   if (!b.text || !b.speaker) continue;
-  const voice = script.characters?.[b.speaker]?.voice || {};
+  const voice = (script.cast || script.characters)?.[b.speaker]?.voice || {};
   const voiceId = voice.elevenlabs;
   if (!voiceId) { console.warn(`beat ${i}: no voice.elevenlabs for "${b.speaker}", skipping`); continue; }
   const text = b.tts || b.text; // optional "tts" field for pronunciation tweaks

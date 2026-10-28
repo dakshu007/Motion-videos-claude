@@ -44,7 +44,7 @@ if (params.has('capture')) {
   document.body.classList.add('capture');
   window.__ready = true; // render.mjs calls __engine.load()/frame() itself
 } else {
-  const url = params.get('script') || '/scripts/example.json';
+  const url = params.get('script') || '/scripts/office-launch.json';
   const script = await (await fetch(url)).json();
   // Audio for preview: per-beat files referenced in the script (if any).
   const audioInfo = {};

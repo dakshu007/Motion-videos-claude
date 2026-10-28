@@ -1,0 +1,23 @@
+{
+  "title": "The optimized omelette",
+  "set": "kitchen",
+  "time": "day",
+  "cast": {
+    "sam": {"type": "human", "name": "Sam", "hair": "short", "hairColor": "#2b1d14", "skin": "#d9a17e", "top": "#e85d4a", "outfit": "tee", "accessories": ["chefHat"], "voice": {"type": "babble", "pitch": 210}},
+    "chip": {"type": "robot", "name": "Chip", "voice": {"type": "babble", "pitch": 240, "wave": "square", "speed": 1.15}}
+  },
+  "beats": [
+    {"speaker": "sam", "text": "Chip, I'm making breakfast.", "expr": "happy", "action": "cook", "screen": {"mode": "recipe", "title": "Omelette", "lines": ["3 eggs", "butter", "cheese", "salt + pepper"]}},
+    {"speaker": "chip", "text": "I optimized your recipe.", "expr": "happy", "action": "nod", "sam": {"action": "cook"}},
+    {"speaker": "sam", "text": "Oh? What's in it now?", "expr": "skeptical", "action": "cook"},
+    {"shot": "screen", "text": "One egg. Zero calories. Zero flavor.", "speaker": "chip", "expr": "smug", "action": "bounce", "screen": {"mode": "recipe", "title": "Omelette v2 (optimized)", "lines": ["1 egg", "0 butter", "0 cheese", "0 joy"]}},
+    {"speaker": "sam", "text": "That's just... a sad egg.", "expr": "annoyed", "action": "handsHips", "shot": "tight"},
+    {"speaker": "chip", "text": "An efficient egg.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "sam", "text": "New rule. I cook.", "expr": "determined", "action": "cook", "shot": "medium", "transition": "whip", "time": "sunset"},
+    {"speaker": "chip", "text": "Then I'll... supervise.", "expr": "worried", "action": "tilt"},
+    {"speaker": "sam", "text": "Here. Taste this.", "expr": "happy", "action": "gesture"},
+    {"speaker": "chip", "text": "I don't have a mouth.", "expr": "sad", "action": "idle", "shot": "tight"},
+    {"speaker": "chip", "text": "...but I want one.", "expr": "crying", "action": "shake", "shot": "tight", "move": "push"},
+    {"speaker": "sam", "text": "Aww, Chip.", "expr": "love", "action": "cheeks", "shot": "two", "pad": 0.9}
+  ]
+}
