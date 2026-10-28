@@ -22,7 +22,7 @@ const flag = (name, def) => { const i = args.indexOf(`--${name}`); return i >= 0
 const VALUE_FLAGS = ['--stills', '--from', '--to'];
 const positional = args.filter((a, i) => !a.startsWith('--') && !VALUE_FLAGS.includes(args[i - 1]));
 const scriptPath = positional[0] || 'scripts/example.json';
-const outPath = positional[1] || path.join('out', path.basename(scriptPath, '.json') + '.mp4');
+const outPath = positional[1] || path.join('out', path.basename(scriptPath, '.json') + (args.includes('--draft') ? '.draft.mp4' : '.mp4'));
 const stills = flag('stills');
 const from = Number(flag('from', 0));
 const to = flag('to') ? Number(flag('to')) : null;
@@ -116,7 +116,7 @@ const t0 = from, t1 = Math.min(to ?? info.duration, info.duration);
 const nFrames = Math.round((t1 - t0) * fps);
 const silent = path.join(cacheDir, 'video.mp4');
 const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
-  '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent],
+  '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent],
 { stdio: ['pipe', 'inherit', 'inherit'] });
 const started = Date.now();
 for (let f = 0; f < nFrames; f++) {

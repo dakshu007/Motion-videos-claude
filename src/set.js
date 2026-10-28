@@ -15,7 +15,7 @@ export const TIMES = {
     sunColor: '#ffd2a8', sunPos: [0.62, 0.06], sunSize: 0.0, sunGlow: 0.25,
     fog: '#5f5d8c', cityTint: 0.95, cityLit: 1.0,
     hemiSky: '#9aa6e0', hemiGround: '#6b4b45', hemi: 0.6,
-    key: '#ffb48a', keyI: 2.2, fill: '#d6c8f2', fillI: 1.25,
+    key: '#ffb48a', keyI: 2.2, fill: '#ecd3d6', fillI: 1.35,
     lamp: 0.0, screen: 0.9, wall: '#8a8fa6', exposure: 0.92, neon: 0.6,
   },
   night: {
@@ -24,7 +24,7 @@ export const TIMES = {
     fog: '#151b33', cityTint: 1.0, cityLit: 1.25,
     hemiSky: '#3a4a8a', hemiGround: '#1d1a26', hemi: 0.55,
     key: '#8fa2ff', keyI: 0.7, fill: '#8f9be0', fillI: 0.75,
-    lamp: 1.1, screen: 1.6, wall: '#5d6b66', exposure: 1.1, neon: 1.4,
+    lamp: 0.6, screen: 1.6, wall: '#5d6b66', exposure: 1.1, neon: 1.4,
   },
   sunset: {
     skyTop: '#e7a77a', skyMid: '#f2c193', skyHorizon: '#f8dcb4',
@@ -422,9 +422,9 @@ export class OfficeSet {
 
     // Props
     const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.034, 0.09, 24), clay('#8fb8a0'));
-    mug.position.set(-0.45, DESK_Y + 0.045, 0.1); mug.castShadow = true; r.add(mug);
+    mug.position.set(-0.58, DESK_Y + 0.045, 0.2); mug.castShadow = true; r.add(mug);
     const handle = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.007, 8, 20), clay('#8fb8a0'));
-    handle.position.set(-0.49, DESK_Y + 0.048, 0.1); handle.rotation.y = Math.PI / 2; r.add(handle);
+    handle.position.set(-0.62, DESK_Y + 0.048, 0.2); handle.rotation.y = Math.PI / 2; r.add(handle);
     const phone = new THREE.Mesh(new RoundedBoxGeometry(0.075, 0.008, 0.15, 3, 0.004), clay('#1d1e22', { roughness: 0.25 }));
     phone.position.set(0.2, DESK_Y + 0.004, 0.18); phone.rotation.y = 0.3; phone.castShadow = true; r.add(phone);
     this.deskPhone = phone;
@@ -470,7 +470,7 @@ export class OfficeSet {
     s.add(this.hemi);
     // Key light through the window (backlight / rim on the characters)
     this.key = new THREE.DirectionalLight('#ffffff', 1);
-    this.key.position.set(-4.2, 3.1, -3.6);
+    this.key.position.set(-2.0, 3.1, -4.6);
     this.key.target.position.set(0, 0.9, -0.3);
     this.key.castShadow = true;
     this.key.shadow.mapSize.set(2048, 2048);

@@ -426,7 +426,7 @@ export class Girl {
         break;
       }
       case 'point':
-        p.R = P(0.3, 0.98, 0.42); p.twist = -0.15; p.yaw = 0.0;
+        p.L = P(-0.3, 0.98, 0.42); p.twist = 0.15;
         break;
       case 'celebrate':
         p.L = P(-0.27, 1.5 + Math.sin(t * 9) * 0.04, 0.06); p.R = P(0.27, 1.5 + Math.sin(t * 9 + 1) * 0.04, 0.06);
@@ -627,8 +627,8 @@ export class Cube {
     const face = new THREE.Mesh(new THREE.PlaneGeometry(S * 0.9, S * 0.8), new THREE.MeshStandardMaterial({ map: this.faceTex, transparent: true, roughness: 0.4, polygonOffset: true, polygonOffsetFactor: -2 }));
     face.position.set(0, S * 0.44 + 0.022, S * 0.43 + 0.0008);
     this.body.add(face);
-    this.root.position.set(0.36, 0.74, -0.03);
-    this.baseYaw = -2.75;
+    this.root.position.set(-0.36, 0.74, -0.03);
+    this.baseYaw = 2.7;
     this.root.rotation.y = this.baseYaw;
   }
 

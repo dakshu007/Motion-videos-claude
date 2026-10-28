@@ -17,7 +17,7 @@ import { clamp, lerp, smooth, easeInOut, easeOutBack, noise } from './util.js';
 const GradeShader = {
   uniforms: {
     tDiffuse: { value: null }, seed: { value: 0 }, blur: { value: 0 }, blurDir: { value: 1 },
-    vignette: { value: 0.32 }, grain: { value: 0.035 }, aspect: { value: 9 / 16 },
+    vignette: { value: 0.32 }, grain: { value: 0.022 }, aspect: { value: 9 / 16 },
   },
   vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
   fragmentShader: `
@@ -192,11 +192,11 @@ export class Engine {
         break;
       case 'cube':
         // From beside the girl's right shoulder: a POV across the desk.
-        pos = around(this.cube.baseYaw - 0.42, 1.0, 0.3);
+        pos = around(this.cube.baseYaw + 0.42, 1.0, 0.3);
         target = c.clone().add(new THREE.Vector3(0, -0.03, 0)); fov = 30; focusOn = c; aperture = 0.022;
         break;
       case 'cubeClose':
-        pos = around(this.cube.baseYaw - 0.3, 0.68, 0.14);
+        pos = around(this.cube.baseYaw + 0.3, 0.68, 0.14);
         target = c.clone(); fov = 30; focusOn = c; aperture = 0.026;
         break;
       case 'screen':
@@ -213,7 +213,7 @@ export class Engine {
         pos = new THREE.Vector3(0.0, 1.45, 2.4); target = new THREE.Vector3(0.0, 1.15, -0.5); fov = 40; focusOn = g; aperture = 0.004;
         break;
       case 'two':
-        pos = new THREE.Vector3(0.55, 1.3, 0.95); target = new THREE.Vector3(0.22, 1.0, -0.4); fov = 36; focusOn = g.clone().lerp(c, 0.5); aperture = 0.008;
+        pos = new THREE.Vector3(-0.55, 1.3, 0.95); target = new THREE.Vector3(-0.22, 1.0, -0.4); fov = 36; focusOn = g.clone().lerp(c, 0.5); aperture = 0.008;
         break;
     }
     // Camera moves
