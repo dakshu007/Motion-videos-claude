@@ -36,6 +36,22 @@ On a CPU-only server (SwiftShader), a full-quality frame takes about 1.3 s, so a
 20 min. `--draft` takes about 5 min, and `--storyboard` takes about 1 min. With `--gpu` on a desktop
 it's a few minutes.
 
+### Blender (Cycles) rendering
+
+`--blender` keeps all the animation, lip sync, cameras and captions from the three.js engine but
+renders the frames in Blender Cycles: ray-traced soft shadows, bounce light, subsurface clay skin,
+depth of field and motion blur on whip pans.
+
+```bash
+python3.13 -m venv /opt/bvenv && /opt/bvenv/bin/pip install bpy   # Blender as a Python module (once)
+node render.mjs scripts/claude-roasts-coffee.json --blender        # defaults: --samples 12 --scale 0.75 --step 2
+tools/queue.sh --blender claude-roasts-sleep claude-roasts-coffee  # several in a row, into out/final/
+```
+
+`--step 2` renders 15 unique frames a second (claymation "on twos"); captions stay at 30 fps.
+On a 4-core CPU a frame takes about 8 s, so a 35 s video takes about 75 min. Exports and frames are
+cached, so an interrupted render picks up where it stopped.
+
 ## Example concepts (in `scripts/`)
 
 | Script | Set | Cast | Premise |
