@@ -48,7 +48,7 @@ Human options: hair (${vocab.HAIR.join(', ')}), hairColor, skin (any skin tone h
 Mascot options: color (hex), accent (hex), size (0.8-1.3).
 Voice (free neural TTS): { "type": "kokoro", "voice": one of ${vocab.KOKORO_VOICES.join(', ')}, "speed": 0.9-1.15, "shift": pitch multiplier }.
 Voice ids: a=American, b=British, f=female, m=male; best: af_heart, af_bella, af_nicole, bf_emma, am_michael, am_fenrir, am_puck, bm_george, bm_fable.
-Give every character a different voice. Mascots sound great with a higher "shift" (1.15-1.35); robots can use am_echo or am_onyx with shift 1.1.
+Give every character a different, natural-sounding voice. Leave out "shift" and "speed" unless asked: voices should sound clean and normal-speed.
 
 BEAT FIELDS:
 - speaker: cast id (their mouth moves, the caption shows "text"). Omit speaker and text for a silent establishing beat (then give "duration" seconds).

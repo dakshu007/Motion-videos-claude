@@ -129,7 +129,7 @@ The example scripts use **Kokoro**, a free open-source neural text-to-speech mod
 
 - `voice`: 28 English voices. The prefix means **a** American / **b** British, **f** female / **m** male.
   The best ones: `af_heart`, `af_bella`, `af_nicole`, `bf_emma`, `am_michael`, `am_fenrir`, `am_puck`, `bm_george`, `bm_fable`.
-- `shift`: pitch multiplier that keeps the timing. 1.15–1.35 makes a cute mascot voice.
+- `shift`: optional pitch multiplier (keeps timing). Leave it out for clean, natural voices.
 - `speed`: talking speed.
 
 The first render downloads the model (~90 MB) from huggingface.co and caches it. After
@@ -141,9 +141,9 @@ npm run voices -- --list                                  # list all voices
 npm run voices -- "Hey, I made you a video!" --voice am_puck   # → out/voice-samples/am_puck.wav
 ```
 
-If Kokoro can't load (e.g. no internet on the first run), the renderer falls back to
-**babble**, which is offline gibberish synthesized from the text, so a render never fails over voices.
-Pass `--babble` to use babble on purpose. Other options:
+If no voice is available for a line (Kokoro can't download its model and there's no recording),
+that line renders **silent with captions** and the renderer prints a warning. Nothing gets a
+placeholder voice unless you pass `--babble`, which uses squeaky gibberish for quick tests only. Other options:
 
 - **Your own recordings**: `"audio": "audio/line3.mp3"` on any beat.
 - **ElevenLabs** (paid): `"voice": { "elevenlabs": "<voice_id>" }`, then

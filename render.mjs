@@ -8,7 +8,7 @@
 //   node render.mjs scripts/office-launch.json --draft      (half-res, no MSAA: ~4x faster)
 //   node render.mjs scripts/office-launch.json --gpu        (use the machine's GPU)
 //
-//   node render.mjs scripts/office-launch.json --babble     (skip Kokoro voices, use babble)
+//   node render.mjs scripts/office-launch.json --babble     (placeholder gibberish instead of real voices)
 //
 // Pipeline: script JSON -> per-line voice audio (free Kokoro neural voices,
 // your own files, or babble) -> headless Chromium renders each frame with Three.js -> ffmpeg
@@ -95,8 +95,9 @@ for (const [i, b] of script.beats.entries()) {
       }
     }
   }
-  if (!file && voice && (voice.type === 'babble' || voice.type === 'kokoro')) {
-    // Babble: offline gibberish; also the fallback when Kokoro can't load.
+  if (!file && voice && (voice.type === 'babble' || (voice.type === 'kokoro' && args.includes('--babble')))) {
+    // Babble: offline gibberish placeholder. Only used when the script asks
+    // for it or --babble is passed; otherwise a missing voice stays silent.
     const female = /^[ab]f_/.test(voice.voice || '');
     const pitch = voice.pitch || (voice.type === 'kokoro' ? (female ? 290 : 190) * (voice.shift || 1) : 260);
     file = path.join(cacheDir, `babble_${i}.wav`);
@@ -108,7 +109,7 @@ for (const [i, b] of script.beats.entries()) {
   audioInfo[i] = { duration: probeDuration(file), env: envelope(file) };
 }
 if (kokoroDown && !args.includes('--babble')) {
-  console.warn(`! Kokoro voices unavailable (${kokoroDown}); used babble instead.\n  Kokoro downloads its model from huggingface.co on first use, so that host must be reachable once.`);
+  console.warn(`! Kokoro voices unavailable (${kokoroDown}); lines without a recording are SILENT (captions only).\n  Kokoro downloads its model from huggingface.co on first use, so that host must be reachable once.\n  Or drop recordings into audio/<script>/ (see voice-lines.md). Pass --babble for placeholder gibberish.`);
 }
 
 // ---- headless render -------------------------------------------------------
