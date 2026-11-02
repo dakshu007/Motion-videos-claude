@@ -7,7 +7,8 @@
     "draft": "node render.mjs --draft",
     "preview": "node server.mjs",
     "tts": "node tools/tts-elevenlabs.mjs",
-    "voices": "node tools/kokoro.mjs"
+    "voices": "node tools/kokoro.mjs",
+    "setup-voices": "pip install kokoro-onnx soundfile && python3 tools/kokoro_tts.py --setup"
   },
   "repository": {
     "type": "git",

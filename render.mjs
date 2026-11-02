@@ -67,49 +67,78 @@ function envelope(file) {
 const audioInfo = {};
 const audioFiles = {};
 const hash = (o) => crypto.createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
-let kokoroDown = args.includes('--babble') ? 'skipped (--babble)' : null;
+const scriptName = path.basename(scriptPath, '.json');
+
+// 1) Work out where each line's audio comes from.
+const plan = [];
 for (const [i, b] of script.beats.entries()) {
   if (!b.text || !b.speaker) continue;
+  const voice = normalized.cast[b.speaker]?.voice;
+  // Your own recordings win: b.audio, or audio/<script>/<NN>_<speaker>.wav|mp3 (see voice-lines.md).
   let file = b.audio;
-  // Recordings dropped into audio/<script>/<NN>_<speaker>.wav|mp3 (see tools/lines.mjs) win.
   if (!file) {
-    const base = path.join('audio', path.basename(scriptPath, '.json'), `${String(i + 1).padStart(2, '0')}_${b.speaker}`);
+    const base = path.join('audio', scriptName, `${String(i + 1).padStart(2, '0')}_${b.speaker}`);
     file = ['.wav', '.mp3', '.m4a', '.ogg'].map((ext) => base + ext).find((p) => fs.existsSync(p)) || null;
   }
-  const voice = normalized.cast[b.speaker]?.voice;
-  if (!file && voice?.type === 'kokoro' && !kokoroDown) {
+  if (file) plan.push({ i, file });
+  else if (voice?.type === 'kokoro' && !args.includes('--babble')) {
     // Free neural voice (Kokoro). Cached per line, so re-renders are instant.
-    file = path.join(cacheDir, `kokoro_${hash([voice, b.tts || b.text])}.wav`);
-    if (!fs.existsSync(file)) {
-      try {
-        const raw = file.replace(/\.wav$/, '.raw.wav');
-        await kokoroToWav(raw, b.tts || b.text, { voice: voice.voice || 'af_heart', speed: voice.speed || 1 });
-        const k = voice.shift || 1; // pitch multiplier (e.g. 1.3 for a squeaky mascot), duration kept
-        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', raw, '-af',
-          `asetrate=24000*${k},aresample=24000,atempo=${(1 / k).toFixed(4)},silenceremove=start_periods=1:start_threshold=-50dB`, file]);
-        fs.rmSync(raw);
-        process.stdout.write(`voice ${i + 1}/${script.beats.length} (${voice.voice})\r`);
-      } catch (e) {
-        kokoroDown = e.cause?.code || e.message.split('\n')[0];
-        file = null;
-      }
+    const text = b.tts || b.text;
+    plan.push({ i, kokoro: { text, voice: voice.voice || 'af_heart', speed: voice.speed || 1, shift: voice.shift || 1 },
+      file: path.join(cacheDir, `kokoro_${hash([voice, text, 'v2'])}.wav`) });
+  } else if (voice && (voice.type === 'babble' || args.includes('--babble'))) {
+    // Babble: gibberish placeholder, only when asked for.
+    const female = /^[ab]f_/.test(voice.voice || '');
+    const pitch = voice.pitch || (voice.type === 'kokoro' ? (female ? 290 : 190) : 260);
+    const file = path.join(cacheDir, `babble_${i}.wav`);
+    writeWav(file, babble(b.text, { pitch, speed: voice.speed, wave: voice.wave, seed: i + 1 }));
+    plan.push({ i, file });
+  }
+}
+
+// 2) Generate the Kokoro lines that aren't cached yet, in one batch.
+//    Engine 1: kokoro-onnx (Python; model from GitHub, see tools/kokoro_tts.py).
+//    Engine 2: kokoro-js (Node; model from Hugging Face).
+const todo = plan.filter((p) => p.kokoro && !fs.existsSync(p.file));
+let kokoroDown = null;
+if (todo.length) {
+  const jobs = todo.map((p) => ({ ...p.kokoro, out: p.file.replace(/\.wav$/, '.raw.wav') }));
+  const jobsFile = path.join(cacheDir, 'kokoro-jobs.json');
+  fs.writeFileSync(jobsFile, JSON.stringify(jobs));
+  console.log(`Generating ${jobs.length} voice line(s) with Kokoro...`);
+  try {
+    execFileSync('python3', ['tools/kokoro_tts.py', jobsFile], { stdio: ['ignore', 'ignore', 'pipe'] });
+  } catch (e) {
+    try {
+      for (const j of jobs) await kokoroToWav(j.out, j.text, { voice: j.voice, speed: j.speed });
+    } catch (e2) {
+      kokoroDown = `python: ${(e.stderr?.toString() || e.message).trim().split('\n').pop()}; node: ${e2.cause?.code || e2.message.split('\n')[0]}`;
     }
   }
-  if (!file && voice && (voice.type === 'babble' || (voice.type === 'kokoro' && args.includes('--babble')))) {
-    // Babble: offline gibberish placeholder. Only used when the script asks
-    // for it or --babble is passed; otherwise a missing voice stays silent.
-    const female = /^[ab]f_/.test(voice.voice || '');
-    const pitch = voice.pitch || (voice.type === 'kokoro' ? (female ? 290 : 190) * (voice.shift || 1) : 260);
-    file = path.join(cacheDir, `babble_${i}.wav`);
-    writeWav(file, babble(b.text, { pitch, speed: voice.speed, wave: voice.wave, seed: i + 1 }));
+  // Clean up each line: optional pitch shift, trim silence at both ends,
+  // gentle high-pass and broadcast-style loudness so every voice sits level.
+  for (const [n, p] of todo.entries()) {
+    const raw = jobs[n].out;
+    if (!fs.existsSync(raw)) continue;
+    const k = p.kokoro.shift;
+    const shift = k !== 1 ? `asetrate=24000*${k},aresample=24000,atempo=${(1 / k).toFixed(4)},` : '';
+    execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', raw, '-af',
+      `${shift}silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000`, p.file]);
+    fs.rmSync(raw);
   }
-  if (!file) continue;
-  if (!fs.existsSync(file)) { console.warn(`! missing audio for beat ${i}: ${file}`); continue; }
-  audioFiles[i] = file;
-  audioInfo[i] = { duration: probeDuration(file), env: envelope(file) };
 }
-if (kokoroDown && !args.includes('--babble')) {
-  console.warn(`! Kokoro voices unavailable (${kokoroDown}); lines without a recording are SILENT (captions only).\n  Kokoro downloads its model from huggingface.co on first use, so that host must be reachable once.\n  Or drop recordings into audio/<script>/ (see voice-lines.md). Pass --babble for placeholder gibberish.`);
+
+// 3) Analyse what we have (length + loudness envelope for lip-sync).
+let missing = 0;
+for (const p of plan) {
+  if (!fs.existsSync(p.file)) { missing++; continue; }
+  audioFiles[p.i] = p.file;
+  audioInfo[p.i] = { duration: probeDuration(p.file), env: envelope(p.file) };
+}
+if (missing) {
+  console.warn(`! ${missing} line(s) have no voice and will be SILENT (captions only).${kokoroDown ? `\n  Kokoro could not run (${kokoroDown}).` : ''}
+  Fix: pip install kokoro-onnx soundfile && python3 tools/kokoro_tts.py --setup
+  Or drop recordings into audio/${scriptName}/ (see voice-lines.md).`);
 }
 
 // ---- headless render -------------------------------------------------------

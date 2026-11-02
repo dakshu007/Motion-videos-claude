@@ -132,13 +132,19 @@ The example scripts use **Kokoro**, a free open-source neural text-to-speech mod
 - `shift`: optional pitch multiplier (keeps timing). Leave it out for clean, natural voices.
 - `speed`: talking speed.
 
-The first render downloads the model (~90 MB) from huggingface.co and caches it. After
-that it works offline. Each line is cached too, so re-renders don't regenerate voices.
-To hear voices:
+The renderer generates every line in one batch, trims the silence and levels the loudness so all
+voices sound clean and consistent. Each line is cached, so re-renders don't regenerate voices.
+It runs Kokoro with whichever engine is available:
+
+1. **kokoro-onnx** (Python, recommended): `pip install kokoro-onnx soundfile`, then
+   `python3 tools/kokoro_tts.py --setup` downloads the model (~120 MB) from GitHub, once.
+2. **kokoro-js** (Node, already in `npm install`): downloads the model from Hugging Face on first use.
+
+To try voices:
 
 ```bash
-npm run voices -- --list                                  # list all voices
-npm run voices -- "Hey, I made you a video!" --voice am_puck   # → out/voice-samples/am_puck.wav
+python3 tools/kokoro_tts.py --say "Hey, I made you a video!" --voice am_puck --out out/voice-samples/puck.wav
+npm run voices -- --list        # list all 28 voices
 ```
 
 If no voice is available for a line (Kokoro can't download its model and there's no recording),
@@ -166,7 +172,9 @@ src/characters/faces.js   expressions + face painters
 src/sets/common.js        sky, time-of-day presets, screens, room/prop/light helpers
 src/sets/*.js             office, cafe, kitchen, bedroom, park, studio
 tools/idea.mjs            idea → script with Claude
-tools/kokoro.mjs          free neural voices (Kokoro)
+tools/kokoro_tts.py       free neural voices (Kokoro, Python engine)
+tools/kokoro.mjs          free neural voices (Kokoro, Node engine)
+tools/lines.mjs           list every line to record (voice-lines.md)
 tools/babble.mjs          gibberish voice synth (fallback)
 tools/tts-elevenlabs.mjs  real voices
 ```
