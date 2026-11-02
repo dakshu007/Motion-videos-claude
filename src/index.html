@@ -35,6 +35,8 @@
 </div>
 <script type="module">
 import { Engine } from './engine.js';
+import { BlenderExport } from './blender-export.js';
+window.__BlenderExport = BlenderExport;
 
 const engine = new Engine(document.getElementById('out'));
 window.__engine = engine;

@@ -112,6 +112,7 @@ export class Human {
     const o = this.o;
     // Warm sheen fakes the soft subsurface glow of skin at grazing angles.
     const skin = clay(o.skin, { sheen: 0.3, sheenColor: '#ff9f86', roughness: 0.62 });
+    skin.name = 'skin';
     const ribs = stripeTexture(32, true); ribs.repeat.set(3, 1);
     const knit = o.outfit === 'sweater' || o.outfit === 'hoodie';
     const sleeveRibs = ribs.clone(); sleeveRibs.repeat.set(2, 6); sleeveRibs.rotation = Math.PI / 2;
@@ -157,6 +158,7 @@ export class Human {
     this.faceTex.anisotropy = 8;
     const headMesh = new THREE.Mesh(new THREE.SphereGeometry(this.R, 96, 64), clay('#ffffff', { sheen: 0.3, sheenColor: '#ff9f86', roughness: 0.62, extra: { map: this.faceTex } }));
     headMesh.castShadow = true;
+    headMesh.material.name = 'skin';
     this.headScale.add(headMesh);
     const nose = new THREE.Mesh(new THREE.SphereGeometry(0.011, 16, 12), skin);
     nose.position.copy(sph(0, -17, 0.99, this.R)); nose.scale.set(1, 0.8, 0.7);

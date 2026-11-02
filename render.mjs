@@ -15,7 +15,7 @@
 // encodes H.264 and mixes the dialogue (+ optional music) on the timeline.
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { startServer } from './server.mjs';
 import crypto from 'node:crypto';
@@ -25,7 +25,7 @@ import { validateScript } from './src/validate.js';
 
 const args = process.argv.slice(2);
 const flag = (name, def) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : def; };
-const VALUE_FLAGS = ['--stills', '--from', '--to'];
+const VALUE_FLAGS = ['--stills', '--from', '--to', '--samples', '--step', '--scale'];
 const positional = args.filter((a, i) => !a.startsWith('--') && !VALUE_FLAGS.includes(args[i - 1]));
 const scriptPath = positional[0] || 'scripts/office-launch.json';
 const outPath = positional[1] || path.join('out', path.basename(scriptPath, '.json') + (args.includes('--draft') ? '.draft.mp4' : '.mp4'));
@@ -225,6 +225,55 @@ fs.mkdirSync(path.dirname(outPath), { recursive: true });
 const t0 = from, t1 = Math.min(to ?? info.duration, info.duration);
 const nFrames = Math.round((t1 - t0) * fps);
 const silent = path.join(cacheDir, 'video.mp4');
+const started = Date.now();
+if (args.includes('--blender')) await renderWithBlender();
+else await renderWithBrowser();
+
+// --blender: three.js poses everything (acting, lip sync, cameras, captions), Blender
+// Cycles renders the frames. Export and render both resume after an interruption.
+async function renderWithBlender() {
+  const step = Number(flag('step', 2)), samples = Number(flag('samples', 12)), scale = flag('scale', '0.75');
+  // Key on the script and on the engine source, so code changes re-export.
+  const srcHash = crypto.createHash('sha1');
+  const walk = (d) => { for (const f of fs.readdirSync(d).sort()) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) walk(p); else srcHash.update(fs.readFileSync(p)); } };
+  walk('src');
+  const bdir = path.join(cacheDir, `blender_${hash([script, W, H, fps, t0, nFrames, srcHash.digest('hex'), 'b1']).slice(0, 12)}`);
+  const sub = (d) => path.join(bdir, d);
+  if (!fs.existsSync(sub('export.done'))) {
+    for (const old of fs.readdirSync(cacheDir)) if (old.startsWith('blender_')) fs.rmSync(path.join(cacheDir, old), { recursive: true, force: true });
+    for (const d of ['tex', 'frames', 'overlay']) fs.mkdirSync(sub(d), { recursive: true });
+    const png = (dataURL) => {
+      const buf = Buffer.from(dataURL.split(',')[1], 'base64');
+      const name = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 16) + '.png';
+      if (!fs.existsSync(path.join(bdir, 'tex', name))) fs.writeFileSync(path.join(bdir, 'tex', name), buf);
+      return name;
+    };
+    const init = await page.evaluate(() => { window.__bx = new window.__BlenderExport(window.__engine); return window.__bx.init(); });
+    for (const t of Object.values(init.textures)) { t.file = t.png ? png(t.png) : null; delete t.png; }
+    fs.writeFileSync(sub('scene.json'), JSON.stringify(init));
+    for (let f = 0; f < nFrames; f++) {
+      const st = await page.evaluate((t) => window.__bx.step(t), t0 + f / fps);
+      for (const id of Object.keys(st.tex)) st.tex[id] = png(st.tex[id]);
+      fs.writeFileSync(path.join(bdir, 'overlay', `${String(f).padStart(5, '0')}.png`), Buffer.from(st.overlay.split(',')[1], 'base64'));
+      delete st.overlay;
+      fs.writeFileSync(path.join(bdir, 'frames', `${String(f).padStart(5, '0')}.json`), JSON.stringify(st));
+      if (f % fps === 0) process.stdout.write(`\rexport ${f + 1}/${nFrames}   `);
+    }
+    fs.writeFileSync(sub('export.done'), '');
+    console.log();
+  }
+  await browser.close(); server.close();
+  const py = fs.existsSync('/opt/bvenv/bin/python') ? '/opt/bvenv/bin/python' : 'python3';
+  const r = spawnSync(py, ['tools/blender_render.py', bdir, sub('render'), '--samples', String(samples), '--step', String(step), '--scale', scale], { stdio: 'inherit' });
+  if (r.status !== 0) { console.error('Blender render failed'); process.exit(1); }
+  // Captions on top, then a light film grade (vignette + grain).
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(fps), '-i', path.join(sub('render'), '%05d.jpg'),
+    '-framerate', String(fps), '-i', path.join(sub('overlay'), '%05d.png'),
+    '-filter_complex', `[0:v]scale=${W}:${H}:flags=lanczos,eq=saturation=1.06:contrast=1.03,vignette=angle=PI/6,noise=alls=4:allf=t[bg];[bg][1:v]overlay=format=auto,format=yuv420p[v]`,
+    '-map', '[v]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-movflags', '+faststart', silent]);
+}
+
+async function renderWithBrowser() {
 // Frames are saved to disk as they render, keyed by the script and render settings, so an
 // interrupted render (crash, killed machine) resumes where it stopped. --fresh starts over.
 const frameKey = hash([script, W, H, fps, t0, nFrames, 'f1']).slice(0, 12);
@@ -235,7 +284,6 @@ for (const old of fs.readdirSync(cacheDir)) {
   if (old.startsWith('frames_') && old !== path.basename(frameDir)) fs.rmSync(path.join(cacheDir, old), { recursive: true, force: true });
 }
 const frameFile = (f) => path.join(frameDir, `${String(f).padStart(5, '0')}.jpg`);
-const started = Date.now();
 let rendered = 0, skipped = 0;
 for (let f = 0; f < nFrames; f++) {
   if (fs.existsSync(frameFile(f))) { skipped++; continue; }
@@ -254,6 +302,8 @@ await browser.close(); server.close();
 console.log();
 execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(fps), '-i', path.join(frameDir, '%05d.jpg'),
   '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent]);
+
+}
 
 // ---- audio mix + mux -------------------------------------------------------
 // Sound effects are synthesized with ffmpeg (no sample libraries needed).

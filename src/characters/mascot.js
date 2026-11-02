@@ -34,7 +34,9 @@ export class Mascot {
   }
 
   mat(c = this.color, extra = {}) {
-    return clay(c, { sheen: 0.5, sheenColor: '#ffffff', roughness: 0.6, ...extra });
+    const m = clay(c, { sheen: 0.5, sheenColor: '#ffffff', roughness: 0.6, ...extra });
+    m.name = 'mascot';
+    return m;
   }
 
   // Face patch that hugs a sphere (u/v span 0..1 over the front)
@@ -56,7 +58,7 @@ export class Mascot {
     }
     for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
       const leg = new THREE.Mesh(new RoundedBoxGeometry(0.022, 0.03, 0.022, 2, 0.005), mat);
-      leg.position.set(x * S * 0.32, 0.013, z * S * 0.3); this.root.add(leg);
+      leg.position.set(x * S * 0.32, 0.013, z * S * 0.3); this.body.add(leg); // legs move with the body
     }
     const face = new THREE.Mesh(new THREE.PlaneGeometry(S * 0.9, S * 0.8), this.faceMat);
     face.position.set(0, S * 0.44 + 0.022, S * 0.43 + 0.0008);

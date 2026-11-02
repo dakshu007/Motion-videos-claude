@@ -469,7 +469,9 @@ export class Engine {
     if (yawOff) this.camera.rotateY(yawOff);
   }
 
-  frame(t) {
+  // opts.scene: pose the scene only (no WebGL render), used by the Blender export.
+  // opts.overlay: draw only captions/titles on a transparent canvas.
+  frame(t, opts = {}) {
     this.tGlobal = t;
     const i = this.beatAt(t);
     const b = this.beats[i];
@@ -512,10 +514,15 @@ export class Engine {
     this.bokeh.uniforms.maxblur.value = 0.01;
     this.grade.uniforms.blur.value = whip * 0.06;
     this.grade.uniforms.seed.value = Math.floor(t * this.fps);
-    this.composer.render();
-
+    this.lastCam = cam;
+    this.lastWhip = whip;
+    if (opts.scene) return i;
     const ctx = this.ctx2d;
-    ctx.drawImage(this.renderer.domElement, 0, 0, this.W, this.H);
+    if (opts.overlay) ctx.clearRect(0, 0, this.W, this.H);
+    else {
+      this.composer.render();
+      ctx.drawImage(this.renderer.domElement, 0, 0, this.W, this.H);
+    }
     if (b.text && this.script.captions !== false) this.drawCaption(b, lt);
     if (b.title) this.drawTitle(b.title, lt, b.duration);
     return i;
