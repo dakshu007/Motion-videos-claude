@@ -24,7 +24,7 @@
     { "speaker": "claude", "text": "Just say: before you start, ask me what you need.", "expr": "happy", "action": "nod" },
     { "speaker": "me", "text": "Okay... this answer is actually great.", "expr": "shocked", "action": "cheeks", "shot": "tight",
       "screen": { "mode": "stat", "label": "Beta signups", "value": 50 } },
-    { "speaker": "claude", "text": "Context. Example. Questions. That's the whole secret.", "expr": "joy", "action": "dance", "shot": "two", "on": "me", "with": "claude", "me": { "expr": "happy" } },
+    { "speaker": "claude", "text": "Context. Example. Questions. That's the whole secret.", "expr": "joy", "action": "dance", "shot": "close", "me": { "expr": "happy" } },
     { "speaker": "me", "text": "Save this, so you remember it next time.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1 }
   ]
 }

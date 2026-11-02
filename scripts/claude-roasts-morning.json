@@ -1,0 +1,26 @@
+{
+  "title": "Claude roasts my morning routine",
+  "set": "bedroom",
+  "time": "dawn",
+  "setOptions": {"sign": "rise"},
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "Quick scroll, then I'll start my day.", "expr": "happy", "action": "phone", "screen": {"mode": "stat", "label": "Screen time today (min)", "value": 94}},
+    {"speaker": "claude", "text": "You said that three hours ago.", "expr": "skeptical", "action": "bounce", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "Rude. Fine. Fix my mornings.", "expr": "annoyed", "action": "armsCrossed"},
+    {"speaker": "claude", "text": "Tip one: no phone for thirty minutes.", "expr": "determined", "action": "nod", "title": "1. Phone stays away", "move": "crash"},
+    {"speaker": "claude", "text": "Let your brain wake up before your notifications do.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "me", "text": "Thirty minutes? That should be illegal.", "expr": "shocked", "action": "cheeks", "shot": "tight"},
+    {"speaker": "claude", "text": "Tip two: water and daylight first.", "expr": "happy", "action": "hop", "title": "2. Water + daylight", "transition": "whip", "time": "day"},
+    {"speaker": "claude", "text": "Morning light tells your body it's daytime. Free energy.", "expr": "happy", "action": "bounce"},
+    {"speaker": "me", "text": "Okay... that's actually nice.", "expr": "happy", "action": "drink"},
+    {"speaker": "claude", "text": "Tip three: do your hardest task first.", "expr": "determined", "action": "lean", "title": "3. Hardest task first", "transition": "whip"},
+    {"speaker": "claude", "text": "Before your brain finds excuses.", "expr": "smug", "action": "proud", "shot": "tight"},
+    {"speaker": "me", "text": "So no more two-hour scroll breakfast?", "expr": "sad", "action": "shrug"},
+    {"speaker": "claude", "text": "You'll survive. Probably.", "expr": "joy", "action": "dance", "shot": "close"},
+    {"speaker": "me", "text": "Save this for tomorrow morning.", "expr": "smug", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

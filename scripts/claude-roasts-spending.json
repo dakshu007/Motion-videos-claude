@@ -1,0 +1,25 @@
+{
+  "title": "Claude roasts my spending",
+  "set": "park",
+  "time": "day",
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "Why am I always broke?", "expr": "sad", "action": "typing", "screen": {"mode": "stat", "label": "Subscriptions", "value": 14}},
+    {"speaker": "claude", "text": "You pay for fourteen subscriptions.", "expr": "smug", "action": "proud"},
+    {"speaker": "claude", "text": "You use two.", "expr": "annoyed", "action": "shake", "shot": "tight", "move": "crash", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "The gym one is motivational!", "expr": "angry", "action": "gesture"},
+    {"speaker": "claude", "text": "You went once. In March.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "claude", "text": "Tip one: pay yourself first.", "expr": "determined", "action": "nod", "title": "1. Pay yourself first", "transition": "whip"},
+    {"speaker": "claude", "text": "Auto-save a little on payday, before you can spend it.", "expr": "happy", "action": "bounce"},
+    {"speaker": "claude", "text": "Tip two: cancel what you don't use.", "expr": "joy", "action": "hop", "title": "2. Cancel unused subs"},
+    {"speaker": "me", "text": "Cancelled eleven. I feel lighter.", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Subscriptions", "value": 3}},
+    {"speaker": "claude", "text": "Tip three: the twenty-four-hour rule.", "expr": "determined", "action": "lean", "title": "3. Wait 24 hours", "transition": "whip"},
+    {"speaker": "claude", "text": "Want something? Wait a day. Still want it? Then decide.", "expr": "happy", "action": "nod"},
+    {"speaker": "me", "text": "So my cart full of gadgets...", "expr": "worried", "action": "think", "shot": "tight"},
+    {"speaker": "claude", "text": "Is a museum now. Look, don't touch.", "expr": "joy", "action": "dance", "shot": "close"},
+    {"speaker": "me", "text": "Save this before your next impulse buy.", "expr": "smug", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}
