@@ -48,7 +48,7 @@ export class StudioSet extends BaseSet {
     mic(0.43, -0.1, -0.35);
     this.device('laptop', -0.2, TOP, -0.15, { rotY: 0.3 });
     this.cyl(0.035, 0.03, 0.09, '#f4efe6', 0.2, TOP + 0.045, 0.05, 20);
-    this.cyl(0.035, 0.035, 0.12, new THREE.MeshPhysicalMaterial({ color: '#ffffff', transparent: true, opacity: 0.35, roughness: 0.05 }), -0.5, TOP + 0.06, 0.12, 16);
+    this.cyl(0.035, 0.035, 0.12, new THREE.MeshPhysicalMaterial({ color: '#ffffff', transparent: true, opacity: 0.35, roughness: 0.35 }), -0.5, TOP + 0.06, 0.12, 16);
 
     this.chair(-0.43, -0.7, { rotY: 0.3, color: '#24242c' });
     this.chair(0.51, -0.66, { rotY: -0.35, color: '#24242c' });

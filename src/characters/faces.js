@@ -163,14 +163,14 @@ export function drawHumanFace(ctx, e, look) {
   }
 
   at(0, -30, () => {
-    const w = 30 * e.mouthW, o = clamp(e.o + e.talk * 0.85, 0, 1), sm = e.smile;
+    const w = 30 * e.mouthW * (1 + 0.3 * (e.wide || 0) - 0.35 * (e.round || 0)), o = clamp(e.o + e.talk * 0.85, 0, 1), sm = e.smile;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     if (o < 0.08) {
       ctx.strokeStyle = look.lip; ctx.lineWidth = 6;
       ctx.beginPath(); ctx.moveTo(-w, -sm * 8); ctx.quadraticCurveTo(0, sm * 16, w, -sm * 8); ctx.stroke();
       return;
     }
-    const h = 8 + o * 38, ww = w * (1.05 - o * 0.35);
+    const h = (8 + o * 38) * (1 - 0.25 * (e.wide || 0) + 0.15 * (e.round || 0)), ww = w * (1.05 - o * 0.35);
     ctx.fillStyle = '#7a2b2b';
     ctx.beginPath();
     ctx.moveTo(-ww, -sm * 6);
@@ -305,7 +305,8 @@ export function drawMascotFace(ctx, e, style) {
     }
     ctx.shadowBlur = 0;
   } else if (talk > 0.08) {
-    ctx.beginPath(); ctx.ellipse(mx, my, 20 + talk * 12, 12 + talk * 32, 0, 0, Math.PI * 2); ctx.fill();
+    const wf = 1 + 0.5 * (e.wide || 0) - 0.35 * (e.round || 0), hf = 1 - 0.3 * (e.wide || 0) + 0.15 * (e.round || 0);
+    ctx.beginPath(); ctx.ellipse(mx, my, (20 + talk * 12) * wf, (12 + talk * 32) * hf, 0, 0, Math.PI * 2); ctx.fill();
   } else if (Math.abs(e.smile) > 0.3) {
     ctx.lineWidth = 12;
     if (style === 'cute' && e.smile > 0.3) {

@@ -1,0 +1,26 @@
+{
+  "title": "Claude roasts my procrastination",
+  "set": "office",
+  "time": "day",
+  "setOptions": {"sign": "just start"},
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "I'll start my project... right after this.", "expr": "happy", "action": "phone", "screen": {"mode": "stat", "label": "Browser tabs open", "value": 47}},
+    {"speaker": "claude", "text": "You've said that for three weeks.", "expr": "annoyed", "action": "shake", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "I work better under pressure!", "expr": "determined", "action": "gesture"},
+    {"speaker": "claude", "text": "You work better under panic.", "expr": "smug", "action": "wiggle", "shot": "tight", "move": "crash"},
+    {"speaker": "claude", "text": "Tip one: the five-minute rule.", "expr": "determined", "action": "nod", "title": "1. Just 5 minutes"},
+    {"speaker": "claude", "text": "Start for five minutes. Starting is the hard part.", "expr": "happy", "action": "bounce"},
+    {"speaker": "me", "text": "Only five? I can do five.", "expr": "skeptical", "action": "think"},
+    {"speaker": "claude", "text": "Tip two: shrink the task.", "expr": "joy", "action": "hop", "title": "2. Make it tiny", "transition": "whip"},
+    {"speaker": "claude", "text": "Not 'write the report.' Just 'write the title.'", "expr": "happy", "action": "nod"},
+    {"speaker": "claude", "text": "Tip three: put your phone in another room.", "expr": "determined", "action": "lean", "title": "3. Phone out of reach", "transition": "whip"},
+    {"speaker": "me", "text": "Another room? Like... a different room?", "expr": "shocked", "action": "cheeks", "shot": "tight"},
+    {"speaker": "me", "text": "Wait. I just finished the whole thing!", "expr": "joy", "action": "celebrate", "screen": {"mode": "done", "title": "project_final.pdf  ✓"}},
+    {"speaker": "claude", "text": "Amazing what happens when you start.", "expr": "smug", "action": "proud"},
+    {"speaker": "me", "text": "Send this to your procrastinating friend.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

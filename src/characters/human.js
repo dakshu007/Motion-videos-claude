@@ -110,7 +110,8 @@ export class Human {
 
   build() {
     const o = this.o;
-    const skin = clay(o.skin, { sheen: 0.08, sheenColor: '#ffd9cc', roughness: 0.7 });
+    // Warm sheen fakes the soft subsurface glow of skin at grazing angles.
+    const skin = clay(o.skin, { sheen: 0.3, sheenColor: '#ff9f86', roughness: 0.62 });
     const ribs = stripeTexture(32, true); ribs.repeat.set(3, 1);
     const knit = o.outfit === 'sweater' || o.outfit === 'hoodie';
     const sleeveRibs = ribs.clone(); sleeveRibs.repeat.set(2, 6); sleeveRibs.rotation = Math.PI / 2;
@@ -154,7 +155,7 @@ export class Human {
     this.faceTex = new THREE.CanvasTexture(this.faceCanvas);
     this.faceTex.colorSpace = THREE.SRGBColorSpace;
     this.faceTex.anisotropy = 8;
-    const headMesh = new THREE.Mesh(new THREE.SphereGeometry(this.R, 96, 64), clay('#ffffff', { sheen: 0.08, sheenColor: '#ffd9cc', roughness: 0.7, extra: { map: this.faceTex } }));
+    const headMesh = new THREE.Mesh(new THREE.SphereGeometry(this.R, 96, 64), clay('#ffffff', { sheen: 0.3, sheenColor: '#ff9f86', roughness: 0.62, extra: { map: this.faceTex } }));
     headMesh.castShadow = true;
     this.headScale.add(headMesh);
     const nose = new THREE.Mesh(new THREE.SphereGeometry(0.011, 16, 12), skin);
@@ -467,7 +468,13 @@ export class Human {
 
     const breath = Math.sin(t * 1.6) * (asleep > 0.5 ? 0.012 : 0.006);
     this.torso.position.y = this.hy + pose.bob;
-    this.torso.rotation.set(pose.lean + breath + noise(t * 0.5, 7) * 0.015, pose.twist + noise(t * 0.4, 8) * 0.02, noise(t * 0.45, 9) * 0.015);
+    // Beat gestures: hands lift a touch on stressed words while talking.
+    const emph = s.emph || 0;
+    if (s.talk > 0 || emph > 0.05) {
+      const act = s.action || 'idle';
+      if (act === 'idle' || act === 'gesture' || act === 'lean') { pose.L.y += emph * 0.025; pose.R.y += emph * 0.035; pose.R.z += emph * 0.02; }
+    }
+    this.torso.rotation.set(pose.lean + emph * 0.025 + breath + noise(t * 0.5, 7) * 0.015, pose.twist + noise(t * 0.4, 8) * 0.02, noise(t * 0.45, 9) * 0.015);
     this.torso.scale.setScalar(1 + breath * 0.3);
 
     this.root.updateMatrixWorld(true);
@@ -478,7 +485,7 @@ export class Human {
       yaw = clamp(Math.atan2(local.x, local.z), -0.7, 0.7);
       pitch = clamp(-Math.atan2(local.y, Math.hypot(local.x, local.z)), -0.4, 0.45);
     }
-    const nod = s.talk * 0.05 * Math.sin(t * 7);
+    const nod = emph * 0.075 + s.talk * 0.015 * Math.sin(t * 9);
     this.head.rotation.set(
       lerp(pitch * 0.85, 0, asleep) + pose.pitch + nod + noise(t * 0.7, 1) * 0.03 - pose.lean * 0.6,
       lerp(yaw * 0.75, 0, asleep) + pose.yaw - pose.twist * 0.5 + noise(t * 0.5, 2) * 0.04,
@@ -519,7 +526,8 @@ export class Human {
       this.props.spatula.rotation.set(0.5, 0, 0.2);
     }
 
-    const e = { ...s.expr, blink: Math.max(blinkAmount(t, this.id.length + 1), asleep > 0.5 ? 1 : 0), talk: s.talk, lookX: eyeX, lookY: eyeY };
+    const shape = s.shape || { wide: 0, round: 0, closed: 0 };
+    const e = { ...s.expr, browY: s.expr.browY + emph * 0.35, blink: Math.max(blinkAmount(t, this.id.length + 1), asleep > 0.5 ? 1 : 0), talk: s.talk, lookX: eyeX, lookY: eyeY, wide: shape.wide, round: shape.round, closed: shape.closed };
     const key = faceKey(e);
     if (key !== this.faceKey) {
       this.faceKey = key;

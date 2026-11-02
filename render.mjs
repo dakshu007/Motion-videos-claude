@@ -69,9 +69,27 @@ const audioFiles = {};
 const hash = (o) => crypto.createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
 const scriptName = path.basename(scriptPath, '.json');
 
+// Emotion-aware delivery: pace, pitch, level and punctuation per expression.
+const DELIVERY = {
+  neutral: [1.0, 1.0, 0], happy: [1.05, 1.02, 0.5], joy: [1.1, 1.04, 1.5], love: [0.97, 1.03, 0],
+  worried: [0.97, 1.0, -0.5], sad: [0.9, 0.97, -1.5], crying: [0.88, 1.02, -1], smug: [0.94, 0.98, 0],
+  skeptical: [0.95, 0.99, 0], annoyed: [1.03, 0.98, 0.5], angry: [1.08, 0.97, 2], shocked: [1.08, 1.05, 1.5],
+  sleepy: [0.86, 0.96, -2], determined: [1.02, 0.99, 1],
+};
+function delivery(text, expr) {
+  const [speed, pitch, gain] = DELIVERY[expr] || DELIVERY.neutral;
+  let spoken = text;
+  if (['joy', 'angry', 'shocked', 'happy', 'determined'].includes(expr)) spoken = spoken.replace(/\.(\s*)$/, '!$1');
+  if (['sad', 'sleepy', 'worried', 'crying'].includes(expr)) spoken = spoken.replace(/, /g, '... ').replace(/\.(\s*)$/, '...$1');
+  return { spoken, speed, pitch, gain };
+}
+
 // 1) Work out where each line's audio comes from.
 const plan = [];
+const lastExpr = {};
 for (const [i, b] of script.beats.entries()) {
+  for (const id of Object.keys(normalized.cast)) if (b[id]?.expr) lastExpr[id] = b[id].expr;
+  if (b.speaker && b.expr) lastExpr[b.speaker] = b.expr;
   if (!b.text || !b.speaker) continue;
   const voice = normalized.cast[b.speaker]?.voice;
   // Your own recordings win: b.audio, or audio/<script>/<NN>_<speaker>.wav|mp3 (see voice-lines.md).
@@ -83,9 +101,9 @@ for (const [i, b] of script.beats.entries()) {
   if (file) plan.push({ i, file });
   else if (voice?.type === 'kokoro' && !args.includes('--babble')) {
     // Free neural voice (Kokoro). Cached per line, so re-renders are instant.
-    const text = b.tts || b.text;
-    plan.push({ i, kokoro: { text, voice: voice.voice || 'af_heart', speed: voice.speed || 1, shift: voice.shift || 1 },
-      file: path.join(cacheDir, `kokoro_${hash([voice, text, 'v2'])}.wav`) });
+    const d = delivery(b.tts || b.text, lastExpr[b.speaker] || 'neutral');
+    const job = { text: d.spoken, voice: voice.voice || 'af_heart', speed: (voice.speed || 1) * d.speed, shift: (voice.shift || 1) * d.pitch, gain: d.gain };
+    plan.push({ i, kokoro: job, file: path.join(cacheDir, `kokoro_${hash([job, 'v3'])}.wav`) });
   } else if (voice && (voice.type === 'babble' || args.includes('--babble'))) {
     // Babble: gibberish placeholder, only when asked for.
     const female = /^[ab]f_/.test(voice.voice || '');
@@ -121,9 +139,10 @@ if (todo.length) {
     const raw = jobs[n].out;
     if (!fs.existsSync(raw)) continue;
     const k = p.kokoro.shift;
-    const shift = k !== 1 ? `asetrate=24000*${k},aresample=24000,atempo=${(1 / k).toFixed(4)},` : '';
+    const shift = Math.abs(k - 1) > 0.001 ? `asetrate=24000*${k},aresample=24000,atempo=${(1 / k).toFixed(4)},` : '';
     execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', raw, '-af',
-      `${shift}silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000`, p.file]);
+      `${shift}silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,` +
+      `highpass=f=75,acompressor=threshold=-20dB:ratio=3:attack=5:release=80:makeup=2,loudnorm=I=-16:TP=-1.5:LRA=11,volume=${p.kokoro.gain}dB,aresample=48000`, p.file]);
     fs.rmSync(raw);
   }
 }
@@ -225,26 +244,79 @@ await browser.close(); server.close();
 console.log();
 
 // ---- audio mix + mux -------------------------------------------------------
-const inputs = [], filters = [], labels = [];
+// Sound effects are synthesized with ffmpeg (no sample libraries needed).
+const SFX = {
+  whoosh: 'anoisesrc=d=0.6:c=pink:a=0.6:r=48000,bandpass=f=1400:width_type=o:w=2.5,afade=t=in:st=0:d=0.32:curve=exp,afade=t=out:st=0.32:d=0.28',
+  ding: "aevalsrc='0.22*sin(2*PI*1318.5*t)*exp(-5*t)+0.16*sin(2*PI*1975.5*t)*exp(-6*t)+0.08*sin(2*PI*2637*t)*exp(-8*t)':s=48000:d=1.2",
+  punch: "aevalsrc='0.8*sin(2*PI*(50+95*exp(-24*t))*t)*exp(-9*t)':s=48000:d=0.45",
+  pop: "aevalsrc='0.45*sin(2*PI*(480+900*exp(-40*t))*t)*exp(-24*t)':s=48000:d=0.18",
+};
+const sfxDir = path.join('out', '.cache', 'sfx');
+fs.mkdirSync(sfxDir, { recursive: true });
+const sfxFile = (name) => {
+  const f = path.join(sfxDir, `${name}.wav`);
+  if (!fs.existsSync(f)) execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', SFX[name], '-ac', '2', f]);
+  return f;
+};
+const events = [];
+if (!args.includes('--no-sfx') && script.sfx !== false) {
+  info.beats.forEach((b, i) => {
+    if (i > 0 && b.transition === 'whip') events.push({ name: 'whoosh', at: b.start - 0.3, vol: 0.55 });
+    if (b.title) events.push({ name: 'ding', at: b.start + 0.04, vol: 0.4 });
+    if (b.move === 'crash' || b.move === 'punch') events.push({ name: 'punch', at: b.start, vol: b.move === 'crash' ? 0.55 : 0.35 });
+  });
+}
+
+let musicFile = null;
+if (script.music !== false && !args.includes('--no-music')) {
+  if (typeof script.music === 'string' && fs.existsSync(script.music)) musicFile = script.music;
+  else {
+    const seed = parseInt(hash(script.title || scriptName).slice(0, 6), 16) % 1000;
+    musicFile = path.join(cacheDir, `music_${seed}_${Math.ceil(info.duration)}.wav`);
+    if (!fs.existsSync(musicFile)) {
+      try { execFileSync('python3', ['tools/music.py', '--seconds', String(Math.ceil(info.duration) + 1), '--seed', String(seed), '--mood', script.musicMood || 'chill', '--out', musicFile], { stdio: 'ignore' }); }
+      catch { console.warn('! background music skipped (python3 + numpy + soundfile needed)'); musicFile = null; }
+    }
+  }
+}
+
+const inputs = [], filters = [];
 let n = 0;
+const voiceLabels = [];
 for (const [i, file] of Object.entries(audioFiles)) {
   const start = info.beats[i].start - t0;
   if (start + audioInfo[i].duration < 0 || start > t1 - t0) continue;
-  inputs.push('-i', file);
-  n++;
+  inputs.push('-i', file); n++;
   const ms = Math.max(0, Math.round(start * 1000));
   const trim = start < 0 ? `atrim=start=${-start},asetpts=PTS-STARTPTS,` : '';
   filters.push(`[${n}:a]${trim}aformat=sample_rates=48000:channel_layouts=stereo,adelay=${ms}|${ms},volume=${script.voiceVolume ?? 1}[v${n}]`);
-  labels.push(`[v${n}]`);
+  voiceLabels.push(`[v${n}]`);
 }
-if (script.music && fs.existsSync(script.music)) {
-  inputs.push('-i', script.music);
-  n++;
-  filters.push(`[${n}:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=start=${t0},asetpts=PTS-STARTPTS,volume=${script.musicVolume ?? 0.25}[m]`);
-  labels.push('[m]');
+const fxLabels = [];
+for (const e of events) {
+  const at = e.at - t0;
+  if (at < -0.5 || at > t1 - t0) continue;
+  inputs.push('-i', sfxFile(e.name)); n++;
+  const ms = Math.max(0, Math.round(at * 1000));
+  filters.push(`[${n}:a]aformat=sample_rates=48000:channel_layouts=stereo,adelay=${ms}|${ms},volume=${e.vol}[x${n}]`);
+  fxLabels.push(`[x${n}]`);
 }
-if (labels.length) {
-  filters.push(`${labels.join('')}amix=inputs=${labels.length}:normalize=0:duration=longest,apad,atrim=0:${(t1 - t0).toFixed(3)}[aout]`);
+const mixLabels = [];
+if (voiceLabels.length) {
+  filters.push(`${voiceLabels.join('')}amix=inputs=${voiceLabels.length}:normalize=0,asplit=2[vox][voxsc]`);
+  mixLabels.push('[vox]');
+}
+if (musicFile) {
+  inputs.push('-i', musicFile); n++;
+  filters.push(`[${n}:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=start=${t0},asetpts=PTS-STARTPTS,loudnorm=I=-30:TP=-8,volume=${script.musicVolume ?? 1}[mus]`);
+  if (voiceLabels.length) filters.push('[mus][voxsc]sidechaincompress=threshold=0.015:ratio=5:attack=25:release=450[bed]');
+  mixLabels.push(voiceLabels.length ? '[bed]' : '[mus]');
+} else if (voiceLabels.length) {
+  filters.push('[voxsc]anullsink');
+}
+if (fxLabels.length) mixLabels.push(...fxLabels);
+if (mixLabels.length) {
+  filters.push(`${mixLabels.join('')}amix=inputs=${mixLabels.length}:normalize=0:duration=longest,apad,atrim=0:${(t1 - t0).toFixed(3)},alimiter=limit=0.95:level=false[aout]`);
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', silent, ...inputs, '-filter_complex', filters.join(';'),
     '-map', '0:v', '-map', '[aout]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', outPath]);
 } else {

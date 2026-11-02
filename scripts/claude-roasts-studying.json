@@ -1,0 +1,25 @@
+{
+  "title": "Claude roasts how I study",
+  "set": "park",
+  "time": "sunset",
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "Six hours of studying! I'm basically a genius.", "expr": "joy", "action": "typing", "screen": {"mode": "stat", "label": "Hours studied", "value": 6}},
+    {"speaker": "claude", "text": "Quick question. What did you learn?", "expr": "skeptical", "action": "tilt"},
+    {"speaker": "me", "text": "...the title of chapter one.", "expr": "worried", "action": "facepalm", "shot": "tight"},
+    {"speaker": "claude", "text": "Rereading feels productive. It isn't.", "expr": "smug", "action": "shake"},
+    {"speaker": "claude", "text": "Tip one: test yourself.", "expr": "determined", "action": "nod", "title": "1. Test yourself", "move": "crash"},
+    {"speaker": "claude", "text": "Close the book and try to recall it. That's where memory gets built.", "expr": "happy", "action": "bounce"},
+    {"speaker": "claude", "text": "Tip two: spread it out.", "expr": "joy", "action": "hop", "title": "2. Space it out", "transition": "whip"},
+    {"speaker": "claude", "text": "Twenty minutes over five days beats five hours in one night.", "expr": "happy", "action": "nod"},
+    {"speaker": "me", "text": "So cramming is... a scam?", "expr": "shocked", "action": "cheeks"},
+    {"speaker": "claude", "text": "Tip three: explain it like you're teaching a kid.", "expr": "determined", "action": "lean", "title": "3. Teach it", "transition": "whip"},
+    {"speaker": "claude", "text": "If you can't explain it simply, you don't know it yet.", "expr": "smug", "action": "proud"},
+    {"speaker": "me", "text": "Okay, I just explained it to a pigeon. I get it now!", "expr": "joy", "action": "celebrate"},
+    {"speaker": "claude", "text": "The pigeon is impressed.", "expr": "joy", "action": "dance", "shot": "tight"},
+    {"speaker": "me", "text": "Save this for your next exam.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

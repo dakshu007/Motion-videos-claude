@@ -50,7 +50,7 @@ export class CafeSet extends BaseSet {
 
     // Pastry case
     this.box(0.4, 0.03, 0.34, '#8a6448', 0.82, TOP + 0.015, 0.0);
-    const glass = this.box(0.4, 0.24, 0.34, new THREE.MeshPhysicalMaterial({ color: '#e8f4ff', transparent: true, opacity: 0.18, roughness: 0.05 }), 0.82, TOP + 0.15, 0.0);
+    const glass = this.box(0.4, 0.24, 0.34, new THREE.MeshPhysicalMaterial({ color: '#e8f4ff', transparent: true, opacity: 0.18, roughness: 0.3 }), 0.82, TOP + 0.15, 0.0);
     glass.castShadow = false;
     for (let i = 0; i < 4; i++) {
       const d = this.mesh(new THREE.TorusGeometry(0.035, 0.018, 10, 20), clay(i % 2 ? '#e6a96b' : '#d9895a'), 0.7 + (i % 2) * 0.12, TOP + 0.05, -0.08 + Math.floor(i / 2) * 0.12);
@@ -60,7 +60,6 @@ export class CafeSet extends BaseSet {
 
     this.device('tablet', 0.22, TOP, -0.12);
     for (let i = 0; i < 3; i++) this.cyl(0.038, 0.032, 0.09, '#f4efe6', 0.5, TOP + 0.045 + i * 0.07, -0.14, 20);
-    this.cyl(0.05, 0.05, 0.12, new THREE.MeshPhysicalMaterial({ color: '#ffffff', transparent: true, opacity: 0.3, roughness: 0.05 }), 0.38, TOP + 0.06, 0.2);
 
     for (const x of [-0.75, 0, 0.75]) this.pendant(x, 2.05, 0.0, { color: '#2f4f4c' });
 

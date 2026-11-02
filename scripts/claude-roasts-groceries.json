@@ -1,0 +1,25 @@
+{
+  "title": "Claude roasts my grocery shopping",
+  "set": "kitchen",
+  "time": "day",
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "I went for milk. I came back with this.", "expr": "happy", "action": "gesture", "screen": {"mode": "recipe", "title": "Receipt", "lines": ["milk", "3 bags of chips", "fancy cheese", "a cactus"]}},
+    {"speaker": "claude", "text": "You also bought a cactus.", "expr": "skeptical", "action": "tilt", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "It looked lonely!", "expr": "sad", "action": "shrug"},
+    {"speaker": "claude", "text": "Tip one: never shop hungry.", "expr": "determined", "action": "nod", "title": "1. Never shop hungry", "move": "crash"},
+    {"speaker": "claude", "text": "Hungry you buys snacks. Full you buys groceries.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "claude", "text": "Tip two: make a list, and stick to it.", "expr": "happy", "action": "hop", "title": "2. List first", "transition": "whip"},
+    {"speaker": "me", "text": "A list. Like a responsible adult.", "expr": "skeptical", "action": "think"},
+    {"speaker": "claude", "text": "Tip three: check the unit price.", "expr": "determined", "action": "lean", "title": "3. Check unit price", "transition": "whip"},
+    {"speaker": "claude", "text": "The big pack isn't always cheaper. Look at price per kilo.", "expr": "happy", "action": "bounce"},
+    {"speaker": "me", "text": "Wait. The tiny one is cheaper?", "expr": "shocked", "action": "cheeks", "shot": "tight"},
+    {"speaker": "claude", "text": "Stores count on you not checking.", "expr": "smug", "action": "proud"},
+    {"speaker": "me", "text": "I just saved money. I feel rich!", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Saved this week", "value": 24}},
+    {"speaker": "claude", "text": "Still keeping the cactus?", "expr": "smug", "action": "tilt", "shot": "tight"},
+    {"speaker": "me", "text": "Obviously. Save this before your next shop.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

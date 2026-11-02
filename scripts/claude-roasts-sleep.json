@@ -1,0 +1,26 @@
+{
+  "title": "Claude roasts my sleep schedule",
+  "set": "bedroom",
+  "time": "night",
+  "setOptions": {"sign": "zzz"},
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "Just one more video, then I'll sleep.", "expr": "happy", "action": "typing", "screen": {"mode": "stat", "label": "Hours slept last night", "value": 4}},
+    {"speaker": "claude", "text": "It's 3 AM. You said that at midnight.", "expr": "skeptical", "action": "bounce", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "Okay, okay. Fix my sleep, genius.", "expr": "annoyed", "action": "armsCrossed"},
+    {"speaker": "claude", "text": "Tip one: wake up at the same time every day.", "expr": "determined", "action": "nod", "title": "1. Same wake-up time", "move": "crash"},
+    {"speaker": "claude", "text": "Yes, even on weekends. Your body loves a schedule.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "me", "text": "Even Sunday? That's cruel.", "expr": "sad", "action": "facepalm", "shot": "tight"},
+    {"speaker": "claude", "text": "Tip two: screens off an hour before bed.", "expr": "happy", "action": "hop", "title": "2. Screens off early", "transition": "whip"},
+    {"speaker": "claude", "text": "Your brain can't relax while it's still scrolling.", "expr": "happy", "action": "bounce"},
+    {"speaker": "me", "text": "So I just stare at the ceiling?", "expr": "skeptical", "action": "shrug"},
+    {"speaker": "claude", "text": "Read a book. Like a cozy little grandpa.", "expr": "joy", "action": "wiggle", "shot": "tight"},
+    {"speaker": "claude", "text": "Tip three: keep your room cool and dark.", "expr": "determined", "action": "lean", "title": "3. Cool + dark room", "transition": "whip", "time": "dawn"},
+    {"speaker": "me", "text": "I slept eight hours. I feel... brand new!", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Hours slept last night", "value": 8}},
+    {"speaker": "claude", "text": "Told you. Sleep is free energy.", "expr": "smug", "action": "proud"},
+    {"speaker": "me", "text": "Save this, and go to sleep.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

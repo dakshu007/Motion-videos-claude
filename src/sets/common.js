@@ -164,8 +164,9 @@ function skyMaterial() {
         vec3 s = vec3(sin(sunPos.x) * cos(sunPos.y), sin(sunPos.y), -cos(sunPos.x) * cos(sunPos.y));
         float r = acos(clamp(dot(d, s), -1.0, 1.0));
         c += sunColor * sunGlow * 0.6 * exp(-r * 4.8);
-        c = mix(c, sunColor * 1.6, smoothstep(sunSize, sunSize * 0.92, r) * step(0.001, sunSize));
-        gl_FragColor = vec4(c, 1.0);
+        c = mix(c, sunColor * 1.1, smoothstep(sunSize, sunSize * 0.92, r) * step(0.001, sunSize));
+        // Cap the sky so a low sun can't bloom/blur into a white wash.
+        gl_FragColor = vec4(min(c, vec3(1.05)), 1.0);
       }`,
     side: THREE.BackSide, depthWrite: false, fog: false,
   });
@@ -581,6 +582,11 @@ export class BaseSet {
     this.fill.position.set(1.2, 2.0, 3.0);
     this.fill.target.position.set(0, 1, -0.5);
     s.add(this.fill, this.fill.target);
+    // Rim light from behind the characters so they separate from the set.
+    this.rim = new THREE.DirectionalLight('#ffffff', 1);
+    this.rim.position.set(0.9, 2.4, -2.6);
+    this.rim.target.position.set(0, 1.1, -0.5);
+    s.add(this.rim, this.rim.target);
     this.screenLight = new THREE.PointLight('#bcd0ff', 0, 1.6, 1.5);
     if (this.anchors.screen) this.screenLight.position.copy(this.anchors.screen).add(new THREE.Vector3(0, 0.3, -0.25));
     s.add(this.screenLight);
@@ -598,6 +604,7 @@ export class BaseSet {
     this.hemi.color.copy(C(p.hemiSky)); this.hemi.groundColor.copy(C(p.hemiGround)); this.hemi.intensity = p.hemi;
     this.key.color.copy(C(p.key)); this.key.intensity = p.keyI;
     this.fill.color.copy(C(p.fill)); this.fill.intensity = p.fillI;
+    this.rim.color.copy(C(p.key)).lerp(new THREE.Color('#ffffff'), 0.4); this.rim.intensity = 0.9 + p.keyI * 0.35;
     for (const { light, base } of this.practicals) light.intensity = base * p.practical;
     this.screenLight.intensity = this.anchors.screen ? p.screen * 0.12 : 0;
     const tint = C(p.tint);

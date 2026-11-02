@@ -1,0 +1,25 @@
+{
+  "title": "Claude roasts my resume",
+  "set": "studio",
+  "time": "night",
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "My resume is perfect. Read it.", "expr": "smug", "action": "typing", "screen": {"mode": "blank", "title": "resume_FINAL_final_v7.pdf"}},
+    {"speaker": "claude", "text": "'Hard-working team player who loves challenges.'", "expr": "skeptical", "action": "tilt"},
+    {"speaker": "claude", "text": "So does everyone else.", "expr": "smug", "action": "shake", "shot": "tight", "move": "crash", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "Okay, rude. But fair.", "expr": "annoyed", "action": "armsCrossed"},
+    {"speaker": "claude", "text": "Tip one: numbers beat adjectives.", "expr": "determined", "action": "nod", "title": "1. Use numbers"},
+    {"speaker": "claude", "text": "Not 'grew sales.' Say 'grew sales forty percent in six months.'", "expr": "happy", "action": "bounce"},
+    {"speaker": "claude", "text": "Tip two: tailor it to every job.", "expr": "joy", "action": "hop", "title": "2. Tailor every time", "transition": "whip"},
+    {"speaker": "claude", "text": "Use their words. Show you read the job post.", "expr": "happy", "action": "nod"},
+    {"speaker": "me", "text": "One resume for every job. That's a lot of resumes.", "expr": "worried", "action": "think"},
+    {"speaker": "claude", "text": "Tip three: make it easy to skim.", "expr": "determined", "action": "lean", "title": "3. Easy to skim", "transition": "whip"},
+    {"speaker": "claude", "text": "Recruiters skim in seconds. Short bullets, results first.", "expr": "smug", "action": "proud"},
+    {"speaker": "me", "text": "Wait. I just got an interview!", "expr": "joy", "action": "celebrate", "shot": "tight", "screen": {"mode": "chat", "title": "Inbox", "messages": [{"from": "them", "text": "Are you free for an interview on Monday?"}]}},
+    {"speaker": "claude", "text": "Numbers. They work.", "expr": "joy", "action": "dance"},
+    {"speaker": "me", "text": "Save this before you apply anywhere.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}

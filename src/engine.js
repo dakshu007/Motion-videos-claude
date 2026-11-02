@@ -9,6 +9,8 @@ import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 import { createSet, TIMES, lerpTime } from './sets/index.js';
 import { createCharacter, EXPRESSIONS, blendExpr } from './characters/index.js';
 import { SHOT_ALIASES } from './vocab.js';
@@ -38,8 +40,15 @@ const GradeShader = {
         }
         c /= tot;
       } else {
-        c = texture2D(tDiffuse, vUv).rgb;
+        // subtle lens fringing toward the edges
+        vec2 off = (vUv - 0.5) * 0.0025;
+        c = vec3(texture2D(tDiffuse, vUv + off).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - off).b);
       }
+      // cinematic grade: a bit more colour and contrast, warm highlights, cool shadows
+      float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+      c = mix(vec3(l), c, 1.12);
+      c = mix(c, c * c * (3.0 - 2.0 * c), 0.22);
+      c += vec3(0.018, 0.006, -0.012) * smoothstep(0.45, 1.0, l) + vec3(-0.008, 0.0, 0.016) * (1.0 - smoothstep(0.0, 0.4, l));
       vec2 d = (vUv - 0.5) * vec2(aspect, 1.0) * 1.6;
       c *= 1.0 - vignette * smoothstep(0.35, 1.05, dot(d, d));
       c += (h(vUv * 1000.0) - 0.5) * grain;
@@ -48,6 +57,36 @@ const GradeShader = {
 };
 
 const WHIP = 0.22; // seconds on each side of a whip-pan cut
+
+// Spread a line's words over its spoken duration (weighted by length, with
+// pauses after punctuation). Used for karaoke captions, lip shapes and
+// emphasis beats. Good enough without a forced aligner.
+function wordTimeline(text, dur) {
+  const toks = text.trim().split(/\s+/).filter(Boolean);
+  const parts = toks.map((tok) => {
+    const letters = tok.replace(/[^A-Za-z0-9]/g, '');
+    return { tok, letters, w: Math.max(2, letters.length), pause: /[.!?…]$/.test(tok) ? 4 : /[,;:]$/.test(tok) ? 2.5 : 0.6 };
+  });
+  const total = parts.reduce((a, p) => a + p.w + p.pause, 0) - (parts.at(-1)?.pause || 0);
+  const k = (dur * 0.97) / Math.max(1, total);
+  let acc = 0;
+  return parts.map((p) => {
+    const t0 = acc * k; acc += p.w; const t1 = acc * k; acc += p.pause;
+    const emphatic = p.letters.length >= 6 || /[!?]$/.test(p.tok) || (p.letters.length > 1 && p.letters === p.letters.toUpperCase() && /[A-Z]/.test(p.letters));
+    return { text: p.tok, letters: p.letters.toLowerCase(), t0, t1, stress: emphatic ? 1 : 0.45, ends: /[.!?…]$/.test(p.tok) };
+  });
+}
+
+// Mouth shape per letter: open (jaw), wide (ee), round (oo), closed (m/b/p).
+function viseme(ch) {
+  if (!ch) return { open: 0.4, wide: 0.2, round: 0, closed: 0 };
+  if ('a'.includes(ch)) return { open: 1, wide: 0.3, round: 0, closed: 0 };
+  if ('eiy'.includes(ch)) return { open: 0.55, wide: 1, round: 0, closed: 0 };
+  if ('ouwq'.includes(ch)) return { open: 0.7, wide: 0, round: 1, closed: 0 };
+  if ('mbp'.includes(ch)) return { open: 0, wide: 0.2, round: 0, closed: 1 };
+  if ('fv'.includes(ch)) return { open: 0.2, wide: 0.7, round: 0, closed: 0 };
+  return { open: 0.45, wide: 0.35, round: 0.1, closed: 0 };
+}
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
 export class Engine {
@@ -98,13 +137,31 @@ export class Engine {
       c.root.rotation.y = c.baseYaw;
     }
 
-    const rt = new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: script.msaa ?? 4 });
+    // Edge smoothing: SMAA by default (much cheaper than MSAA on CPU renders).
+    const msaa = script.msaa ?? 0;
+    const rt = new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: msaa });
     const composer = new EffectComposer(renderer, rt);
     composer.addPass(new RenderPass(this.scene, this.camera));
+    if (script.ao !== false) {
+      // Ambient occlusion: soft contact shadows where things meet.
+      const ao = new GTAOPass(this.scene, this.camera, W, H);
+      ao.updateGtaoMaterial({ radius: 0.22, distanceExponent: 1.5, thickness: 1, scale: 1.1, samples: W < 700 ? 8 : 10 });
+      ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 });
+      ao.blendIntensity = 0.85;
+      composer.addPass(ao);
+    }
     this.bokeh = new BokehPass(this.scene, this.camera, { focus: 1, aperture: 0.012, maxblur: 0.01 });
     composer.addPass(this.bokeh);
+    // Clamp extreme HDR highlights (glossy glass catching a lamp) so bloom
+    // gives a soft glow instead of washing out the whole frame.
+    composer.addPass(new ShaderPass({
+      uniforms: { tDiffuse: { value: null } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform sampler2D tDiffuse; varying vec2 vUv; void main(){ vec4 c = texture2D(tDiffuse, vUv); float m = max(c.r, max(c.g, c.b)); gl_FragColor = vec4(c.rgb * min(1.0, 2.5 / max(m, 1e-4)), c.a); }',
+    }));
     composer.addPass(new UnrealBloomPass(new THREE.Vector2(W / 2, H / 2), 0.35, 0.6, 0.9));
     composer.addPass(new OutputPass());
+    if (!msaa) composer.addPass(new SMAAPass());
     this.grade = new ShaderPass(GradeShader);
     this.grade.uniforms.aspect.value = W / H;
     composer.addPass(this.grade);
@@ -116,7 +173,10 @@ export class Engine {
     this.buildTimeline(script, audio);
     return {
       duration: this.duration, fps: this.fps, width: W, height: H,
-      beats: this.beats.map((b) => ({ start: b.start, duration: b.duration, speaker: b.speaker || null })),
+      beats: this.beats.map((b) => ({
+        start: b.start, duration: b.duration, speaker: b.speaker || null, transition: b.transition || null,
+        title: !!b.title, move: this.beatMove(b), expr: b.speaker ? b.state[b.speaker]?.expr : null,
+      })),
     };
   }
 
@@ -135,6 +195,7 @@ export class Engine {
       b.start = t;
       t += b.duration;
       b.env = a?.env || null;
+      b.words = b.text ? wordTimeline(b.text, b.speechDur) : null;
       b.state = {};
       for (const id of this.ids) {
         const st = { ...carry[id], look: null };
@@ -170,6 +231,39 @@ export class Engine {
     if (b.env) return clamp((b.env[Math.min(b.env.length - 1, Math.floor(lt * this.fps))] || 0) * 1.4);
     const syl = Math.max(0, Math.sin(lt * Math.PI * 2 * 4.2 + noise(lt * 3, b.index) * 1.5));
     return syl * smooth(lt / 0.08) * smooth((b.speechDur - lt) / 0.1) * (0.6 + 0.4 * noise(lt * 5, b.index + 3));
+  }
+
+  // Lip shape + emphasis for the speaker at time t, and a nod cue for listeners.
+  speech(b, t) {
+    const lt = t - b.start;
+    const none = { talk: 0, open: 0, wide: 0, round: 0, closed: 0, emph: 0, nod: 0, word: -1 };
+    if (!b.words || lt < 0 || lt > b.speechDur + 0.6) return none;
+    const amp = b.env ? this.talkAmount(b, t) : (lt <= b.speechDur ? 0.85 : 0);
+    let out = { ...none };
+    for (const [i, w] of b.words.entries()) {
+      // emphasis: a quick impulse at each word onset, bigger on stressed words
+      if (lt >= w.t0) out.emph = Math.max(out.emph, w.stress * Math.exp(-(lt - w.t0) / 0.16) * (lt - w.t0 < 0.5 ? 1 : 0));
+      // listeners nod at sentence ends
+      if (w.ends && lt >= w.t1 && lt < w.t1 + 0.55) out.nod = Math.max(out.nod, Math.sin(((lt - w.t1) / 0.55) * Math.PI));
+      if (lt >= w.t0 && lt < w.t1) {
+        out.word = i;
+        const letters = w.letters || 'a';
+        const f = ((lt - w.t0) / (w.t1 - w.t0)) * letters.length;
+        const j = Math.min(letters.length - 1, Math.floor(f));
+        const a = viseme(letters[j]), c = viseme(letters[Math.min(letters.length - 1, j + 1)]);
+        const m = smooth(f - j);
+        for (const key of ['open', 'wide', 'round', 'closed']) out[key] = lerp(a[key], c[key], m);
+      }
+    }
+    if (out.word >= 0) out.talk = clamp(Math.max(0.25, amp) * (0.25 + 0.75 * out.open) * (1 - out.closed * 0.9));
+    else if (b.env && lt <= b.speechDur) out.talk = this.talkAmount(b, t) * 0.4;
+    return out;
+  }
+
+  beatMove(b) {
+    if (b.move) return b.move;
+    const ex = b.speaker ? b.state[b.speaker]?.expr : null;
+    return ex === 'shocked' || ex === 'angry' ? 'punch' : 'push';
   }
 
   resolveLook(name, who) {
@@ -239,8 +333,10 @@ export class Engine {
     for (const hit of this.raycaster.intersectObjects(this.scene.children, true)) {
       const o = hit.object;
       if (!o.visible) continue;
+      // See-through props (glass cases, jars) still count: a camera inside
+      // one renders as a white wash. Only near-invisible decals are skipped.
       const m = o.material;
-      if (m && m.transparent && (m.opacity < 0.6 || m.map)) continue;
+      if (m && m.transparent && m.opacity < 0.12) continue;
       let own = false;
       for (let p = o; p; p = p.parent) if (p === c.root) { own = true; break; }
       if (!own) return hit;
@@ -345,12 +441,13 @@ export class Engine {
         ({ pos, target, fov, aperture } = this.charShot(c, name, pick.a, pick.yaw));
     }
     // Camera moves
-    const move = b.move || 'push';
+    const move = this.beatMove(b);
     const dir = new THREE.Vector3().subVectors(target, pos);
     if (move === 'push') pos.addScaledVector(dir, 0.06 * easeInOut(prog));
     if (move === 'pull') pos.addScaledVector(dir, -0.08 * easeInOut(prog));
     if (move === 'drift') pos.add(V(lerp(-0.04, 0.04, easeInOut(prog)), 0, 0));
     if (move === 'crash') pos.addScaledVector(dir, 0.28 * easeOutBack(clamp(lt / 0.3)));
+    if (move === 'punch') pos.addScaledVector(dir, 0.14 * easeOutBack(clamp(lt / 0.25)));
     if (move === 'orbit') {
       const a = lerp(-0.18, 0.18, easeInOut(prog));
       const rel = pos.clone().sub(target).applyAxisAngle(V(0, 1, 0), a);
@@ -434,13 +531,70 @@ export class Engine {
         action: st.action,
         prevAction: i === 0 ? st.action : pst.action,
         actionBlend: i === 0 || !changed ? 1 : clamp(lt / 0.35),
-        talk: b.speaker === id ? this.talkAmount(b, t) : 0,
+        ...(() => {
+          const sp = this.speech(b, t);
+          if (b.speaker === id) return { talk: sp.talk, shape: { wide: sp.wide, round: sp.round, closed: sp.closed }, emph: sp.emph };
+          return { talk: 0, shape: null, emph: sp.nod * 0.5 };
+        })(),
+        enter: changed || (pst.expr !== st.expr) ? clamp(1 - lt / 0.35) : 0,
         look: this.resolveLook(this.defaultLook(b, id), id),
       });
     }
   }
 
   drawCaption(b, lt) {
+    if ((this.script.captionStyle || 'karaoke') === 'pill' || !b.words) return this.drawPill(b, lt);
+    // Viral-style captions: 1-3 words at a time, the spoken word highlighted.
+    const ctx = this.ctx2d, W = this.W, H = this.H, s = W / 720;
+    const fs = Math.round(44 * s);
+    ctx.font = `800 ${fs}px Inter, sans-serif`;
+    if (!b.chunks) {
+      b.chunks = [];
+      let cur = [];
+      for (const [i, w] of b.words.entries()) {
+        cur.push(i);
+        const width = ctx.measureText(cur.map((k) => b.words[k].text).join(' ')).width;
+        if (cur.length >= 3 || w.ends || /[,;:]$/.test(w.text) || width > W * 0.62) { b.chunks.push(cur); cur = []; }
+      }
+      if (cur.length) b.chunks.push(cur);
+    }
+    let wi = 0;
+    for (const [i, w] of b.words.entries()) if (lt >= w.t0 - 0.02) wi = i;
+    const chunk = b.chunks.find((c) => c.includes(wi)) || b.chunks[0];
+    const chunkStart = b.words[chunk[0]].t0;
+    const pop = easeOutBack(clamp((lt - chunkStart + 0.04) / 0.14));
+    const words = chunk.map((k) => b.words[k].text);
+    const space = ctx.measureText(' ').width * 1.7;
+    const widths = words.map((w) => ctx.measureText(w).width);
+    const total = widths.reduce((a, x) => a + x, 0) + space * (words.length - 1);
+    const cy = H * (this.script.captionY ?? 0.7);
+    ctx.save();
+    ctx.globalAlpha = clamp(lt / 0.06) * clamp((b.duration - lt) / 0.1);
+    ctx.translate(W / 2, cy);
+    ctx.scale(0.86 + 0.14 * pop, 0.86 + 0.14 * pop);
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.lineJoin = 'round';
+    let x = -total / 2;
+    chunk.forEach((k, j) => {
+      const w = b.words[k];
+      const active = k === wi && lt <= w.t1 + 0.25;
+      const wp = active ? easeOutBack(clamp((lt - w.t0) / 0.12)) : 0;
+      const sc = 1 + 0.07 * wp;
+      ctx.save();
+      ctx.translate(x + widths[j] / 2, -6 * s * wp);
+      ctx.scale(sc, sc);
+      ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 14 * s; ctx.shadowOffsetY = 3 * s;
+      ctx.lineWidth = 9 * s; ctx.strokeStyle = '#111';
+      ctx.strokeText(w.text, -widths[j] / 2, 0);
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = active ? (this.script.captionColor || '#FFD84D') : '#ffffff';
+      ctx.fillText(w.text, -widths[j] / 2, 0);
+      ctx.restore();
+      x += widths[j] + space;
+    });
+    ctx.restore();
+  }
+
+  drawPill(b, lt) {
     const ctx = this.ctx2d, W = this.W, H = this.H;
     const s = W / 720;
     const fs = Math.round(25 * s);
@@ -470,16 +624,38 @@ export class Engine {
     ctx.restore();
   }
 
+  // Title badge ("1. Give context"): pops in with a little tilt.
   drawTitle(text, lt, dur) {
     const ctx = this.ctx2d, W = this.W, H = this.H, s = W / 720;
-    const a = clamp(lt / 0.3) * clamp((dur - lt) / 0.3);
+    const a = clamp(lt / 0.12) * clamp((dur - lt) / 0.25);
+    const k = easeOutBack(clamp(lt / 0.35));
+    const m = text.match(/^(\d+)[.)]\s*(.*)$/);
     ctx.save();
     ctx.globalAlpha = a;
-    ctx.font = `800 ${Math.round(46 * s)}px Inter, sans-serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 18 * s;
-    ctx.fillStyle = '#fff';
-    ctx.fillText(text, W / 2, H * 0.2 - (1 - a) * 10);
+    ctx.translate(W / 2, H * 0.16);
+    ctx.rotate((-3 + 3 * (1 - k)) * Math.PI / 180);
+    ctx.scale(0.6 + 0.4 * k, 0.6 + 0.4 * k);
+    ctx.font = `800 ${Math.round(40 * s)}px Inter, sans-serif`;
+    ctx.textBaseline = 'middle';
+    const label = m ? m[2] : text;
+    const tw = ctx.measureText(label).width;
+    const badge = m ? 58 * s : 0;
+    const pad = 22 * s, h = 76 * s, w = tw + pad * 2 + (m ? badge + 12 * s : 0);
+    ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 24 * s; ctx.shadowOffsetY = 8 * s;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, h / 2); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    let x = -w / 2 + pad;
+    if (m) {
+      ctx.fillStyle = this.script.accent || '#d97757';
+      ctx.beginPath(); ctx.arc(x + badge / 2 - 6 * s, 0, badge / 2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+      ctx.fillText(m[1], x + badge / 2 - 6 * s, 2 * s);
+      x += badge + 12 * s;
+    }
+    ctx.fillStyle = '#1b1b1f'; ctx.textAlign = 'left';
+    ctx.fillText(label, x, 2 * s);
     ctx.restore();
   }
+
 }

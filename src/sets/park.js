@@ -36,7 +36,7 @@ export class ParkSet extends BaseSet {
     this.box(0.3, 0.16, 0.2, '#c99a5e', 0.58, TOP + 0.08, 0.12, 0.02);
     this.mesh(new THREE.TorusGeometry(0.11, 0.01, 8, 24, Math.PI), clay('#a87a46'), 0.58, TOP + 0.16, 0.12);
     this.box(0.31, 0.02, 0.21, '#e5484d', 0.58, TOP + 0.15, 0.12);
-    this.cyl(0.05, 0.05, 0.16, new THREE.MeshPhysicalMaterial({ color: '#fff3a0', transparent: true, opacity: 0.6, roughness: 0.1 }), -0.58, TOP + 0.08, 0.15, 20);
+    this.cyl(0.05, 0.05, 0.16, new THREE.MeshPhysicalMaterial({ color: '#fff3a0', transparent: true, opacity: 0.6, roughness: 0.35 }), -0.58, TOP + 0.08, 0.15, 20);
     this.box(0.12, 0.04, 0.1, '#e8c38a', -0.45, TOP + 0.02, -0.05, 0.015);
     const blanket = this.mesh(new THREE.PlaneGeometry(1.6, 1.2), clay('#e5484d', { sheen: 0.6 }), -1.9, 0.01, 1.0);
     blanket.rotation.x = -Math.PI / 2;

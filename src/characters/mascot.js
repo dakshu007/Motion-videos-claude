@@ -206,9 +206,10 @@ export class Mascot {
     const m = (key) => lerp(a[key], b[key], k);
     const breath = Math.sin(t * 2.1) * 0.012;
     const talkBob = s.talk * 0.012;
-    let squash = m('squash') + breath - talkBob * 0.5;
+    const emph = s.emph || 0, enter = s.enter || 0;
+    let squash = m('squash') + breath - talkBob * 0.5 + emph * 0.07 - Math.sin(enter * Math.PI) * 0.05;
     if (this.kind === 'blob') squash += noise(t * 3, 50) * 0.04 + s.talk * 0.05 * Math.sin(t * 20);
-    this.body.position.y = m('y') + talkBob * 0.3;
+    this.body.position.y = m('y') + talkBob * 0.3 + emph * 0.008 + Math.sin(enter * Math.PI) * 0.018;
     this.body.scale.set(1 - squash * 0.5, 1 + squash, 1 - squash * 0.5);
     let lookYaw = 0, lookPitch = 0;
     if (s.look) {
@@ -237,7 +238,8 @@ export class Mascot {
     if (this.bulbMat) this.bulbMat.color.set(this.accent).multiplyScalar(1 + s.talk * 2 + Math.sin(t * 3) * 0.3);
 
     const asleep = s.action === 'sleep';
-    const e = { ...expr, blink: asleep ? 1 : blinkAmount(t, this.id.length + 5), talk: s.talk, lookX: clamp(lookYaw * 0.8 + noise(t * 0.8, 24) * 0.3, -1, 1), lookY: 0 };
+    const shape = s.shape || { wide: 0, round: 0, closed: 0 };
+    const e = { ...expr, ...shape, blink: asleep ? 1 : blinkAmount(t, this.id.length + 5), talk: s.talk, lookX: clamp(lookYaw * 0.8 + noise(t * 0.8, 24) * 0.3, -1, 1), lookY: 0 };
     const key = faceKey(e);
     if (key !== this.faceKey) {
       this.faceKey = key;

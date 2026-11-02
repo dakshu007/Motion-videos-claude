@@ -1,0 +1,26 @@
+{
+  "title": "Claude roasts my coffee habit",
+  "set": "cafe",
+  "time": "dawn",
+  "setOptions": {"sign": "coffee"},
+  "cast": {
+    "me": {"type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": {"type": "kokoro", "voice": "am_michael"}},
+    "claude": {"type": "cube", "name": "Claude", "color": "#d97757", "voice": {"type": "kokoro", "voice": "af_heart"}}
+  },
+  "beats": [
+    {"speaker": "me", "text": "Coffee number six! And it's only 10 AM.", "expr": "joy", "action": "drink", "screen": {"mode": "stat", "label": "Coffees today", "value": 6}},
+    {"speaker": "claude", "text": "You're vibrating. I can hear it.", "expr": "skeptical", "action": "shake", "me": {"expr": "shocked"}},
+    {"speaker": "me", "text": "That's just my productivity!", "expr": "determined", "action": "gesture"},
+    {"speaker": "claude", "text": "Tip one: water before coffee.", "expr": "determined", "action": "nod", "title": "1. Water first", "move": "crash"},
+    {"speaker": "claude", "text": "You wake up thirsty. Coffee won't fix that.", "expr": "smug", "action": "wiggle"},
+    {"speaker": "claude", "text": "Tip two: set a caffeine cutoff.", "expr": "happy", "action": "hop", "title": "2. No coffee after 2 PM", "transition": "whip"},
+    {"speaker": "claude", "text": "Caffeine stays in your body for hours. It steals your sleep.", "expr": "happy", "action": "bounce"},
+    {"speaker": "me", "text": "So my 9 PM latte...", "expr": "worried", "action": "think", "shot": "tight"},
+    {"speaker": "claude", "text": "Is why you're awake at 3 AM.", "expr": "smug", "action": "proud", "shot": "tight"},
+    {"speaker": "claude", "text": "Tip three: coffee is not breakfast.", "expr": "determined", "action": "lean", "title": "3. Coffee ≠ breakfast", "transition": "whip", "time": "day"},
+    {"speaker": "me", "text": "Wait, food? In the morning?", "expr": "shocked", "action": "cheeks"},
+    {"speaker": "me", "text": "Two coffees and actual breakfast. I feel calm!", "expr": "joy", "action": "celebrate", "screen": {"mode": "stat", "label": "Coffees today", "value": 2}},
+    {"speaker": "claude", "text": "Look at you. A functioning human.", "expr": "joy", "action": "dance", "shot": "tight"},
+    {"speaker": "me", "text": "Save this for tomorrow's coffee.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1}
+  ]
+}
