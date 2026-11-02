@@ -225,23 +225,35 @@ fs.mkdirSync(path.dirname(outPath), { recursive: true });
 const t0 = from, t1 = Math.min(to ?? info.duration, info.duration);
 const nFrames = Math.round((t1 - t0) * fps);
 const silent = path.join(cacheDir, 'video.mp4');
-const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
-  '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent],
-{ stdio: ['pipe', 'inherit', 'inherit'] });
+// Frames are saved to disk as they render, keyed by the script and render settings, so an
+// interrupted render (crash, killed machine) resumes where it stopped. --fresh starts over.
+const frameKey = hash([script, W, H, fps, t0, nFrames, 'f1']).slice(0, 12);
+const frameDir = path.join(cacheDir, `frames_${frameKey}`);
+if (args.includes('--fresh')) fs.rmSync(frameDir, { recursive: true, force: true });
+fs.mkdirSync(frameDir, { recursive: true });
+for (const old of fs.readdirSync(cacheDir)) {
+  if (old.startsWith('frames_') && old !== path.basename(frameDir)) fs.rmSync(path.join(cacheDir, old), { recursive: true, force: true });
+}
+const frameFile = (f) => path.join(frameDir, `${String(f).padStart(5, '0')}.jpg`);
 const started = Date.now();
+let rendered = 0, skipped = 0;
 for (let f = 0; f < nFrames; f++) {
+  if (fs.existsSync(frameFile(f))) { skipped++; continue; }
   const url = await grab(t0 + f / fps);
-  const ok = ff.stdin.write(Buffer.from(url.split(',')[1], 'base64'));
-  if (!ok) await new Promise((r) => ff.stdin.once('drain', r));
-  if (f % fps === 0 || f === nFrames - 1) {
+  const tmp = frameFile(f) + '.tmp';
+  fs.writeFileSync(tmp, Buffer.from(url.split(',')[1], 'base64'));
+  fs.renameSync(tmp, frameFile(f));
+  rendered++;
+  if (rendered === 1 || f % fps === 0 || f === nFrames - 1) {
     const el = (Date.now() - started) / 1000;
-    process.stdout.write(`\rframe ${f + 1}/${nFrames}  ${(el / (f + 1) * 1000).toFixed(0)} ms/frame  eta ${((nFrames - f - 1) * el / (f + 1)).toFixed(0)}s   `);
+    const left = nFrames - f - 1;
+    process.stdout.write(`\rframe ${f + 1}/${nFrames}${skipped ? ` (${skipped} resumed)` : ''}  ${(el / rendered * 1000).toFixed(0)} ms/frame  eta ${(left * el / rendered).toFixed(0)}s   `);
   }
 }
-ff.stdin.end();
-await new Promise((r) => ff.on('close', r));
 await browser.close(); server.close();
 console.log();
+execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(fps), '-i', path.join(frameDir, '%05d.jpg'),
+  '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent]);
 
 // ---- audio mix + mux -------------------------------------------------------
 // Sound effects are synthesized with ffmpeg (no sample libraries needed).
