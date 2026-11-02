@@ -71,6 +71,11 @@ let kokoroDown = args.includes('--babble') ? 'skipped (--babble)' : null;
 for (const [i, b] of script.beats.entries()) {
   if (!b.text || !b.speaker) continue;
   let file = b.audio;
+  // Recordings dropped into audio/<script>/<NN>_<speaker>.wav|mp3 (see tools/lines.mjs) win.
+  if (!file) {
+    const base = path.join('audio', path.basename(scriptPath, '.json'), `${String(i + 1).padStart(2, '0')}_${b.speaker}`);
+    file = ['.wav', '.mp3', '.m4a', '.ogg'].map((ext) => base + ext).find((p) => fs.existsSync(p)) || null;
+  }
   const voice = normalized.cast[b.speaker]?.voice;
   if (!file && voice?.type === 'kokoro' && !kokoroDown) {
     // Free neural voice (Kokoro). Cached per line, so re-renders are instant.
