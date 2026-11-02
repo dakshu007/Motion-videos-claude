@@ -20,6 +20,8 @@ ap.add_argument('--only', default='')
 ap.add_argument('--scale', type=float, default=1.0)
 ap.add_argument('--threads', type=int, default=0)
 A = ap.parse_args()
+# Cycles' occluded bounce light reads darker than three.js' flat ambient; lift to match.
+EXPOSURE = float(os.environ.get('BLENDER_EXPOSURE', 1.0))
 SHEEN = float(os.environ.get('BLENDER_SHEEN', 0.3))
 
 SRC, OUT = A.src, A.out
@@ -525,7 +527,7 @@ for f in range(nframes):
     pending_tex = {}
     apply_hemi()
     set_cam(st['cam'])
-    scene.view_settings.exposure = math.log2(max(0.05, st.get('exp', 1)))
+    scene.view_settings.exposure = math.log2(max(0.05, st.get('exp', 1))) + EXPOSURE
     # whip pans: real motion blur from this frame's camera to the next one's
     whip = st['cam'].get('whip', 0)
     if whip > 0.05 and f + 1 < nframes:
