@@ -316,8 +316,8 @@ export class BaseSet {
       wide: { pos: [1.55, 1.95, 2.35], target: [0.05, 0.98, -0.45], fov: 38 },
       wide2: { pos: [0.0, 1.45, 2.4], target: [0.0, 1.15, -0.5], fov: 40 },
     };
-    const dome = new THREE.Mesh(new THREE.SphereGeometry(70, 48, 24), (this.skyMat = skyMaterial()));
-    this.root.add(dome);
+    this.dome = new THREE.Mesh(new THREE.SphereGeometry(70, 48, 24), (this.skyMat = skyMaterial()));
+    this.root.add(this.dome);
     this.build();
     this.buildLights();
   }

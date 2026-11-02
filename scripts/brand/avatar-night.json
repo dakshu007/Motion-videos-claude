@@ -1,0 +1,40 @@
+{
+  "title": "Claude avatar night",
+  "set": "blank",
+  "time": "day",
+  "width": 1080,
+  "height": 1080,
+  "captions": false,
+  "music": false,
+  "sfx": false,
+  "setOptions": {
+    "bg": [
+      "#2b3060",
+      "#0e1024"
+    ]
+  },
+  "cast": {
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757"
+    }
+  },
+  "beats": [
+    {
+      "text": "",
+      "duration": 2,
+      "shot": "close:claude",
+      "fov": 17,
+      "handheld": 0,
+      "move": "static",
+      "claude": {
+        "expr": "cheerful",
+        "action": "idle",
+        "look": "camera"
+      }
+    }
+  ],
+  "vignette": 0.12,
+  "grain": 0.008
+}

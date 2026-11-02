@@ -7,6 +7,7 @@ export const EXPRESSIONS = {
   neutral: E({}),
   happy: E({ brow: 0.15, browY: 0.15, open: 0.92, smile: 1, mouthW: 1.2, blush: 0.8 }),
   joy: E({ brow: 0.2, browY: 0.25, happyEyes: 1, smile: 1, mouthW: 1.3, o: 0.35, blush: 0.95 }),
+  cheerful: E({ brow: 0.15, browY: 0.2, happyEyes: 1, smile: 1, mouthW: 1.2, o: 0, blush: 0.95 }),
   worried: E({ brow: 1, browY: 0.1, open: 0.95, smile: -0.6, mouthW: 0.9, blush: 0.4, pupil: 0.95 }),
   sad: E({ brow: 1, browY: -0.1, open: 0.7, smile: -0.9, mouthW: 0.8, blush: 0.3 }),
   smug: E({ brow: -0.2, browAsym: 1, open: 0.62, smile: 0.75, blush: 0.6 }),

@@ -8,6 +8,7 @@ export const SETS = {
   bedroom: 'Gamer bedroom: desk with a big monitor and RGB keyboard, LED strips, gaming chair, bed, posters. Looks best at night.',
   park: 'Outdoors: picnic table with a laptop and basket in a park with trees, grass and hills. Looks best in day/sunset.',
   studio: 'Podcast studio: round table with two boom mics and a laptop, acoustic foam wall, ON AIR sign. Made for two hosts.',
+  blank: 'Clean seamless gradient backdrop (profile pictures, thumbnails). setOptions.bg = [innerColor, outerColor].',
 };
 
 export const SLOTS = {
@@ -41,7 +42,7 @@ export const ACCESSORIES = ['glasses', 'headphones', 'chefHat', 'cap', 'bow'];
 
 export const EXPRESSION_NAMES = [
   'neutral', 'happy', 'joy', 'worried', 'sad', 'smug', 'skeptical', 'annoyed',
-  'angry', 'shocked', 'sleepy', 'determined', 'love', 'crying',
+  'angry', 'shocked', 'sleepy', 'determined', 'love', 'crying', 'cheerful',
 ];
 
 export const HUMAN_ACTIONS = {

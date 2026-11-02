@@ -164,6 +164,8 @@ export class Engine {
     if (!msaa) composer.addPass(new SMAAPass());
     this.grade = new ShaderPass(GradeShader);
     this.grade.uniforms.aspect.value = W / H;
+    if (script.vignette !== undefined) this.grade.uniforms.vignette.value = script.vignette;
+    if (script.grain !== undefined) this.grade.uniforms.grain.value = script.grain;
     composer.addPass(this.grade);
     this.composer = composer;
     this.raycaster = new THREE.Raycaster();
@@ -336,7 +338,7 @@ export class Engine {
       // See-through props (glass cases, jars) still count: a camera inside
       // one renders as a white wash. Only near-invisible decals are skipped.
       const m = o.material;
-      if (m && m.transparent && m.opacity < 0.12) continue;
+      if (m && (m.isShadowMaterial || (m.transparent && m.opacity < 0.12))) continue;
       let own = false;
       for (let p = o; p; p = p.parent) if (p === c.root) { own = true; break; }
       if (!own) return hit;

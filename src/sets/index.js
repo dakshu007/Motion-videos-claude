@@ -4,10 +4,11 @@ import { KitchenSet } from './kitchen.js';
 import { BedroomSet } from './bedroom.js';
 import { ParkSet } from './park.js';
 import { StudioSet } from './studio.js';
+import { BlankSet } from './blank.js';
 
 export { TIMES, lerpTime } from './common.js';
 
-const SETS = { office: OfficeSet, cafe: CafeSet, kitchen: KitchenSet, bedroom: BedroomSet, park: ParkSet, studio: StudioSet };
+const SETS = { office: OfficeSet, cafe: CafeSet, kitchen: KitchenSet, bedroom: BedroomSet, park: ParkSet, studio: StudioSet, blank: BlankSet };
 
 export function createSet(name, scene, options) {
   const S = SETS[name] || OfficeSet;
