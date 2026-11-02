@@ -20,6 +20,7 @@ ap.add_argument('--only', default='')
 ap.add_argument('--scale', type=float, default=1.0)
 ap.add_argument('--threads', type=int, default=0)
 A = ap.parse_args()
+SHEEN = float(os.environ.get('BLENDER_SHEEN', 0.3))
 
 SRC, OUT = A.src, A.out
 os.makedirs(OUT, exist_ok=True)
@@ -116,7 +117,7 @@ def build_material(mid, d, geo_type):
         b.inputs['Roughness'].default_value = d['roughness'] if d['roughness'] is not None else 0.5
         b.inputs['Metallic'].default_value = d['metalness'] or 0
         if d['sheen']:
-            b.inputs['Sheen Weight'].default_value = min(1, d['sheen'])
+            b.inputs['Sheen Weight'].default_value = min(1, d['sheen'] * SHEEN)  # Cycles sheen is much stronger than three.js'
             if d['sheenColor']:
                 b.inputs['Sheen Tint'].default_value = (*d['sheenColor'], 1)
             if d['sheenRoughness'] is not None:
