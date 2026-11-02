@@ -236,18 +236,31 @@ export class Screen {
     } else if (mode === 'chat') {
       ctx.fillStyle = '#f3f4f7'; ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, 44);
-      ctx.font = '700 20px Inter'; ctx.fillStyle = '#222'; ctx.fillText(screen?.title || 'Chat', 20, 12);
+      ctx.font = '700 20px Inter'; ctx.fillStyle = '#222'; ctx.fillText(screen?.title || 'Chat', W * 0.16, 12);
+      // Bubbles stay inside the middle ~70% so close-up shots never crop them.
       const msgs = screen?.messages || [{ from: 'them', text: 'hey' }, { from: 'me', text: 'hi!' }];
       const shown = Math.max(1, Math.ceil(progress * msgs.length * 1.2));
-      let y = 60;
-      ctx.font = '500 19px Inter';
+      const maxW = W * 0.5, lh = 26;
+      let y = 58;
+      ctx.font = '600 20px Inter';
       for (const m of msgs.slice(0, shown)) {
-        const tw = Math.min(ctx.measureText(m.text).width, W * 0.62);
+        const lines = [];
+        let line = '';
+        for (const w of m.text.split(' ')) {
+          const t = line ? line + ' ' + w : w;
+          if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
+        }
+        lines.push(line);
+        const tw = Math.max(...lines.map((l) => ctx.measureText(l).width));
         const me = m.from === 'me';
+        const x = me ? W * 0.84 - tw - 28 : W * 0.16;
+        const bh = lines.length * lh + 16;
+        if (y + bh > H - 8) break;
         ctx.fillStyle = me ? '#3b82f6' : '#e2e4ea';
-        ctx.beginPath(); ctx.roundRect(me ? W - tw - 50 : 20, y, tw + 30, 40, 16); ctx.fill();
-        ctx.fillStyle = me ? '#fff' : '#222'; ctx.fillText(m.text, me ? W - tw - 35 : 35, y + 10, W * 0.62);
-        y += 52;
+        ctx.beginPath(); ctx.roundRect(x, y, tw + 28, bh, 16); ctx.fill();
+        ctx.fillStyle = me ? '#fff' : '#222';
+        lines.forEach((l, k) => ctx.fillText(l, x + 14, y + 9 + k * lh));
+        y += bh + 10;
       }
     } else if (mode === 'recipe') {
       ctx.fillStyle = '#fffaf2'; ctx.fillRect(0, 0, W, H);

@@ -1,0 +1,30 @@
+{
+  "title": "3 tricks to get better answers from AI",
+  "set": "office",
+  "time": "dusk",
+  "setOptions": { "sign": "ask better" },
+  "cast": {
+    "me": { "type": "human", "name": "Dakshu", "hair": "short", "hairColor": "#1f1712", "skin": "#c98e6a", "top": "#2f3b52", "outfit": "hoodie", "lashes": false, "voice": { "type": "kokoro", "voice": "am_michael" } },
+    "claude": { "type": "cube", "name": "Claude", "color": "#d97757", "voice": { "type": "kokoro", "voice": "af_heart" } }
+  },
+  "beats": [
+    { "speaker": "me", "text": "Claude, why are your answers so generic?", "expr": "annoyed", "action": "typing",
+      "screen": { "mode": "chat", "title": "Claude", "messages": [ { "from": "me", "text": "write a post about my app" }, { "from": "them", "text": "Here's a post about your app! It's great..." } ] } },
+    { "speaker": "claude", "text": "Because your prompt was five words.", "expr": "smug", "action": "proud", "me": { "expr": "skeptical" } },
+    { "speaker": "me", "text": "Fair. So how do I fix it?", "expr": "skeptical", "action": "shrug" },
+    { "speaker": "claude", "text": "Tip one: give me context.", "expr": "determined", "action": "nod", "title": "1. Give context", "move": "crash" },
+    { "speaker": "claude", "text": "Who it's for, why it matters, and what you've tried.", "expr": "happy", "action": "bounce", "shot": "screen",
+      "screen": { "mode": "chat", "title": "Claude", "messages": [ { "from": "me", "text": "Post for busy founders. Goal: get 50 beta signups." }, { "from": "me", "text": "Last post flopped: too salesy." } ] } },
+    { "speaker": "me", "text": "So, brief you like a new teammate.", "expr": "happy", "action": "think" },
+    { "speaker": "claude", "text": "Exactly. Tip two: show me an example.", "expr": "joy", "action": "hop", "title": "2. Show an example", "transition": "whip" },
+    { "speaker": "claude", "text": "One good sample beats ten adjectives.", "expr": "smug", "action": "wiggle", "shot": "tight" },
+    { "speaker": "me", "text": "Paste a post I loved. Got it.", "expr": "determined", "action": "typing", "shot": "overShoulder",
+      "screen": { "mode": "chat", "title": "Claude", "messages": [ { "from": "me", "text": "Write it in the style of this post:" }, { "from": "me", "text": "\"We shipped. It's ugly. It works.\"" } ] } },
+    { "speaker": "claude", "text": "Tip three: let me ask questions first.", "expr": "determined", "action": "lean", "title": "3. Let it ask first", "transition": "whip" },
+    { "speaker": "claude", "text": "Just say: before you start, ask me what you need.", "expr": "happy", "action": "nod" },
+    { "speaker": "me", "text": "Okay... this answer is actually great.", "expr": "shocked", "action": "cheeks", "shot": "tight",
+      "screen": { "mode": "stat", "label": "Beta signups", "value": 50 } },
+    { "speaker": "claude", "text": "Context. Example. Questions. That's the whole secret.", "expr": "joy", "action": "dance", "shot": "two", "on": "me", "with": "claude", "me": { "expr": "happy" } },
+    { "speaker": "me", "text": "Save this, so you remember it next time.", "expr": "happy", "action": "wave", "look": "camera", "pad": 1.1 }
+  ]
+}
