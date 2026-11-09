@@ -43,7 +43,7 @@
         "label": "Sales this month",
         "value": -40
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -56,7 +56,7 @@
       "me": {
         "expr": "worried"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -69,7 +69,7 @@
         "expr": "skeptical",
         "action": "lean"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -82,7 +82,7 @@
       "me": {
         "expr": "shocked"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -94,7 +94,7 @@
       "claude": {
         "expr": "smug"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -108,7 +108,7 @@
         "expr": "worried",
         "action": "think"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -122,7 +122,7 @@
         "expr": "happy",
         "action": "nod"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -141,7 +141,7 @@
         "expr": "skeptical",
         "action": "lean"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -154,7 +154,7 @@
         "src": "/assets/mykavo/health.png"
       },
       "title": "1. Full site audit",
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -167,7 +167,7 @@
         "expr": "smug",
         "action": "proud"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -188,7 +188,7 @@
           1
         ]
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -208,7 +208,7 @@
           0.6
         ]
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -221,20 +221,7 @@
       "claude": {
         "expr": "smug"
       },
-      "pad": 0.25
-    },
-    {
-      "speaker": "claude",
-      "text": "And that's why buyers leave.",
-      "tts": "[gently roasting] And that's why buyers leave.",
-      "expr": "smug",
-      "action": "proud",
-      "shot": "close",
-      "me": {
-        "expr": "sad",
-        "action": "lookDown"
-      },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -248,7 +235,7 @@
       "me": {
         "expr": "worried"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -261,7 +248,7 @@
         "expr": "happy",
         "action": "nod"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -274,7 +261,7 @@
       "me": {
         "expr": "joy"
       },
-      "pad": 0.25,
+      "pad": 0.18,
       "card": {
         "src": "/assets/mykavo/perf.png"
       }
@@ -292,20 +279,7 @@
         "src": "/assets/mykavo/menu.png",
         "width": 0.5
       },
-      "pad": 0.25
-    },
-    {
-      "speaker": "me",
-      "text": "Even WordPress? Custom sites?",
-      "tts": "[curious] Even WordPress? Custom sites?",
-      "expr": "skeptical",
-      "action": "think",
-      "shot": "close",
-      "claude": {
-        "expr": "joy",
-        "action": "bounce"
-      },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -319,7 +293,7 @@
         "src": "/assets/mykavo/integrations.png",
         "width": 0.6
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -333,7 +307,7 @@
         "expr": "smug",
         "action": "proud"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -345,7 +319,7 @@
       "me": {
         "expr": "shocked"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -355,7 +329,7 @@
       "action": "cheeks",
       "shot": "tight",
       "move": "crash",
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -369,24 +343,7 @@
         "expr": "joy",
         "action": "celebrate"
       },
-      "pad": 0.25
-    },
-    {
-      "speaker": "me",
-      "text": "I'm adding all twelve sites. Right now.",
-      "tts": "[hyped] I'm adding all twelve sites. Right now!",
-      "expr": "joy",
-      "action": "typing",
-      "shot": "overShoulder",
-      "screen": {
-        "mode": "image",
-        "src": "/assets/mykavo/dashboard-audit.webp"
-      },
-      "claude": {
-        "expr": "happy",
-        "action": "dance"
-      },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "claude",
@@ -404,7 +361,7 @@
         "expr": "worried",
         "action": "phone"
       },
-      "pad": 0.25
+      "pad": 0.18
     },
     {
       "speaker": "me",
@@ -423,8 +380,9 @@
         "expr": "joy",
         "action": "hop"
       },
-      "pad": 0.25
+      "pad": 0.18
     }
   ],
-  "lead": 0.15
+  "lead": 0.15,
+  "tail": 0.6
 }
