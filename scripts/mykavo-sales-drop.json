@@ -1,0 +1,430 @@
+{
+  "title": "My client's sales dropped. Claude found out why.",
+  "set": "office",
+  "time": "day",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "Claude. My client's sales dropped forty percent this month.",
+      "tts": "[stressed, urgent] Claude. My client's sales dropped forty percent this month.",
+      "expr": "worried",
+      "action": "facepalm",
+      "shot": "close",
+      "move": "push",
+      "screen": {
+        "mode": "stat",
+        "label": "Sales this month",
+        "value": -40
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Ouch. What changed on the site?",
+      "tts": "[wincing] Ouch. [curious] What changed on the site?",
+      "expr": "worried",
+      "action": "tilt",
+      "shot": "close",
+      "transition": "whip",
+      "me": {
+        "expr": "worried"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "No idea! I manage twelve websites. I can't check them all, every day.",
+      "tts": "[frustrated] No idea! I manage twelve websites. I can't check them all, every day!",
+      "expr": "annoyed",
+      "action": "gesture",
+      "shot": "medium",
+      "claude": {
+        "expr": "skeptical",
+        "action": "lean"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "So your strategy is... hope?",
+      "tts": "[deadpan] So your strategy is... [beat] hope?",
+      "expr": "skeptical",
+      "action": "tilt",
+      "shot": "tight",
+      "move": "crash",
+      "me": {
+        "expr": "shocked"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "It's worked so far.",
+      "tts": "[defensive, mumbling] It's worked so far.",
+      "expr": "sad",
+      "action": "shrug",
+      "shot": "close",
+      "claude": {
+        "expr": "smug"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Has it? If the contact page broke tonight, when would you know?",
+      "tts": "[playfully] Has it? [sharp] If the contact page broke tonight... when would you know?",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "medium",
+      "move": "push",
+      "me": {
+        "expr": "worried",
+        "action": "think"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "When he calls me. Screaming.",
+      "tts": "[realizing, nervous laugh] When he calls me. [groans] Screaming.",
+      "expr": "crying",
+      "action": "cheeks",
+      "shot": "tight",
+      "move": "crash",
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Exactly. Okay, let me show you MyKavo.",
+      "tts": "[laughs] Exactly. [excited] Okay, let me show you MyKavo!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "close",
+      "transition": "whip",
+      "title": "Meet MyKavo",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      },
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "It audits every page of your site and gives it a health score.",
+      "tts": "[confident] It audits every page of your site, and gives it a health score.",
+      "expr": "happy",
+      "action": "bounce",
+      "shot": "screen",
+      "card": {
+        "src": "/assets/mykavo/health.png"
+      },
+      "title": "1. Full site audit",
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "Wait. So it tells me what's wrong?",
+      "tts": "[intrigued] Wait. So it tells me what's wrong?",
+      "expr": "shocked",
+      "action": "lean",
+      "shot": "medium",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Better. It tells you what each problem is costing you. Visitors. Sales. Trust.",
+      "tts": "[smug] Better. It tells you what each problem is costing you. [emphatic] Visitors. Sales. Trust.",
+      "expr": "determined",
+      "action": "nod",
+      "shot": "overShoulder",
+      "card": {
+        "src": "/assets/mykavo/cost.png"
+      },
+      "title": "2. What it costs you",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp",
+        "focus": [
+          0,
+          1
+        ]
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Look. No contact page. No privacy policy. Heavy code slowing every page.",
+      "tts": "[pointing it out] Look. No contact page. No privacy policy. Heavy code slowing every page.",
+      "expr": "skeptical",
+      "action": "shake",
+      "shot": "screen",
+      "card": {
+        "src": "/assets/mykavo/trust.png"
+      },
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-issues.webp",
+        "focus": [
+          1,
+          0.6
+        ]
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "That's literally my client's site.",
+      "tts": "[stunned] That's... literally my client's site.",
+      "expr": "shocked",
+      "action": "facepalm",
+      "shot": "tight",
+      "move": "crash",
+      "claude": {
+        "expr": "smug"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "And that's why buyers leave.",
+      "tts": "[gently roasting] And that's why buyers leave.",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "close",
+      "me": {
+        "expr": "sad",
+        "action": "lookDown"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "It even checks if AI can reach your site. If not, you're invisible in AI answers.",
+      "tts": "[leaning in, secretive] It even checks if AI can reach your site. If not... you're invisible in AI answers.",
+      "expr": "determined",
+      "action": "lean",
+      "shot": "close",
+      "move": "push",
+      "title": "3. AI search check",
+      "me": {
+        "expr": "worried"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "Okay, but I'm not a developer.",
+      "tts": "[hesitant] Okay, but... I'm not a developer.",
+      "expr": "worried",
+      "action": "shrug",
+      "shot": "medium",
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "You don't need to be. AI explains every issue in plain English. And how to fix it.",
+      "tts": "[warm, reassuring] You don't need to be. AI explains every issue in plain English. And how to fix it.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "close",
+      "title": "4. AI fix guides",
+      "me": {
+        "expr": "joy"
+      },
+      "pad": 0.25,
+      "card": {
+        "src": "/assets/mykavo/perf.png"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "And it watches all twelve sites, 24/7. Broken link? Missing button? You know first.",
+      "tts": "[energetic] And it watches all twelve sites, twenty-four seven. Broken link? Missing button? [satisfied] You know first.",
+      "expr": "determined",
+      "action": "spin",
+      "shot": "wide2",
+      "transition": "whip",
+      "title": "5. 24/7 monitoring",
+      "card": {
+        "src": "/assets/mykavo/menu.png",
+        "width": 0.5
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "Even WordPress? Custom sites?",
+      "tts": "[curious] Even WordPress? Custom sites?",
+      "expr": "skeptical",
+      "action": "think",
+      "shot": "close",
+      "claude": {
+        "expr": "joy",
+        "action": "bounce"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Any website. Plus a report in your inbox every weekend.",
+      "tts": "[cheerful] Any website! Plus, a report in your inbox every weekend.",
+      "expr": "joy",
+      "action": "dance",
+      "shot": "medium",
+      "title": "6. Weekly email report",
+      "card": {
+        "src": "/assets/mykavo/integrations.png",
+        "width": 0.6
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "Okay, okay. How much does this cost?",
+      "tts": "[suspicious] Okay, okay. How much does this cost?",
+      "expr": "skeptical",
+      "action": "armsCrossed",
+      "shot": "close",
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "It's free.",
+      "tts": "[casually] It's free.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "me": {
+        "expr": "shocked"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "Wait. Free free?",
+      "tts": "[shocked, disbelieving] Wait. Free... free?",
+      "expr": "shocked",
+      "action": "cheeks",
+      "shot": "tight",
+      "move": "crash",
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Yes! Absolutely free.",
+      "tts": "[laughs, excited] Yes! Absolutely free!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "close",
+      "title": "100% FREE",
+      "me": {
+        "expr": "joy",
+        "action": "celebrate"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "I'm adding all twelve sites. Right now.",
+      "tts": "[hyped] I'm adding all twelve sites. Right now!",
+      "expr": "joy",
+      "action": "typing",
+      "shot": "overShoulder",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      },
+      "claude": {
+        "expr": "happy",
+        "action": "dance"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "claude",
+      "text": "Good. Start with that contact page. Before he calls again.",
+      "tts": "[teasing] Good. Start with that contact page. [laughs] Before he calls again.",
+      "expr": "smug",
+      "action": "wiggle",
+      "shot": "close",
+      "card": {
+        "src": "/assets/mykavo/endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "worried",
+        "action": "phone"
+      },
+      "pad": 0.25
+    },
+    {
+      "speaker": "me",
+      "text": "He's calling. Right now.",
+      "tts": "[panicked whisper] He's calling. Right now.",
+      "expr": "shocked",
+      "action": "phone",
+      "shot": "medium",
+      "move": "push",
+      "card": {
+        "src": "/assets/mykavo/endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "claude": {
+        "expr": "joy",
+        "action": "hop"
+      },
+      "pad": 0.25
+    }
+  ],
+  "lead": 0.15
+}

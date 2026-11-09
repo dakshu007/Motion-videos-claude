@@ -11,7 +11,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
-import { createSet, TIMES, lerpTime } from './sets/index.js';
+import { createSet, TIMES, lerpTime, IMAGES, loadImages } from './sets/index.js';
 import { createCharacter, EXPRESSIONS, blendExpr } from './characters/index.js';
 import { SHOT_ALIASES } from './vocab.js';
 import { normalizeScript } from './validate.js';
@@ -173,6 +173,7 @@ export class Engine {
 
     if (document.fonts) await Promise.all(['600', '700', '800'].map((w) => document.fonts.load(`${w} 32px Inter`)));
     this.buildTimeline(script, audio);
+    await loadImages(script.beats.flatMap((b) => [b.card?.src, b.screen?.mode === 'image' && b.screen.src].filter(Boolean)));
     return {
       duration: this.duration, fps: this.fps, width: W, height: H,
       beats: this.beats.map((b) => ({
@@ -523,6 +524,7 @@ export class Engine {
       this.composer.render();
       ctx.drawImage(this.renderer.domElement, 0, 0, this.W, this.H);
     }
+    if (b.card) this.drawCard(b, i, lt);
     if (b.text && this.script.captions !== false) this.drawCaption(b, lt);
     if (b.title) this.drawTitle(b.title, lt, b.duration);
     return i;
@@ -634,6 +636,37 @@ export class Engine {
   }
 
   // Title badge ("1. Give context"): pops in with a little tilt.
+  // A screenshot card that pops in over the scene (beat field "card": {src, y?, width?}).
+  // Consecutive beats with the same card keep it on screen without popping again.
+  drawCard(b, i, lt) {
+    const c = b.card, img = IMAGES[c.src];
+    if (!img) return;
+    const ctx = this.ctx2d, W = this.W, H = this.H, s = W / 720;
+    const same = (j) => this.beats[j]?.card?.src === c.src;
+    let t = lt;
+    for (let j = i - 1; same(j); j--) t += this.beats[j].duration;
+    let left = b.duration - lt;
+    for (let j = i + 1; same(j); j++) left += this.beats[j].duration;
+    const k = easeOutBack(clamp(t / 0.45));
+    const a = clamp(t / 0.12) * clamp(left / 0.22);
+    let w = W * (c.width ?? 0.9), h = w * img.height / img.width;
+    const maxH = H * (c.maxH ?? 0.36);
+    if (h > maxH) { w *= maxH / h; h = maxH; }
+    const r = 22 * s, bw = 5 * s;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.translate(W / 2, H * (c.y ?? 0.43) + (1 - k) * 60 * s + Math.sin(t * 1.6) * 3 * s);
+    ctx.rotate(((c.tilt ?? -1.2) * (1 - 0.6 * k)) * Math.PI / 180);
+    ctx.scale(0.82 + 0.18 * k, 0.82 + 0.18 * k);
+    ctx.shadowColor = 'rgba(0,0,0,0.38)'; ctx.shadowBlur = 34 * s; ctx.shadowOffsetY = 14 * s;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.roundRect(-w / 2 - bw, -h / 2 - bw, w + bw * 2, h + bw * 2, r + bw); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, r); ctx.clip();
+    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+  }
+
   drawTitle(text, lt, dur) {
     const ctx = this.ctx2d, W = this.W, H = this.H, s = W / 720;
     const a = clamp(lt / 0.12) * clamp((dur - lt) / 0.25);

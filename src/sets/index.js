@@ -6,7 +6,7 @@ import { ParkSet } from './park.js';
 import { StudioSet } from './studio.js';
 import { BlankSet } from './blank.js';
 
-export { TIMES, lerpTime } from './common.js';
+export { TIMES, lerpTime, IMAGES, loadImages } from './common.js';
 
 const SETS = { office: OfficeSet, cafe: CafeSet, kitchen: KitchenSet, bedroom: BedroomSet, park: ParkSet, studio: StudioSet, blank: BlankSet };
 

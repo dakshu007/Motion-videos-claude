@@ -175,6 +175,17 @@ function skyMaterial() {
 // ---------------------------------------------------------------------------
 // The live screen (laptop / monitor / tablet)
 // ---------------------------------------------------------------------------
+// Images used by beats (screen mode "image", beat "card"), preloaded by the engine.
+export const IMAGES = {};
+export function loadImages(srcs) {
+  return Promise.all([...new Set(srcs)].filter((src) => !IMAGES[src]).map((src) => new Promise((res) => {
+    const img = new Image();
+    img.onload = () => { IMAGES[src] = img; res(); };
+    img.onerror = () => { console.warn('image failed to load: ' + src); res(); };
+    img.src = src;
+  })));
+}
+
 export class Screen {
   constructor() {
     this.canvas = document.createElement('canvas');
@@ -262,6 +273,16 @@ export class Screen {
         ctx.fillStyle = me ? '#fff' : '#222';
         lines.forEach((l, k) => ctx.fillText(l, x + 14, y + 9 + k * lh));
         y += bh + 10;
+      }
+    } else if (mode === 'image') {
+      // A screenshot (e.g. a product dashboard), fitted to the screen width from the top.
+      ctx.fillStyle = screen?.bg || '#f4f5f8'; ctx.fillRect(0, 0, W, H);
+      const img = IMAGES[screen?.src];
+      if (img) {
+        const k = Math.max(W / img.width, H / img.height) * (screen?.zoom || 1);
+        const dw = img.width * k, dh = img.height * k;
+        const fx = screen?.focus?.[0] ?? 0.5, fy = screen?.focus?.[1] ?? 0;
+        ctx.drawImage(img, (W - dw) * fx, (H - dh) * fy, dw, dh);
       }
     } else if (mode === 'recipe') {
       ctx.fillStyle = '#fffaf2'; ctx.fillRect(0, 0, W, H);

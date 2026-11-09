@@ -84,9 +84,10 @@ export const SCREEN_MODES = {
   stat: '{mode:"stat", label, value} big counting number', blank: '{mode:"blank", title?}',
   chat: '{mode:"chat", messages:[{from:"me"|"them", text}]}', recipe: '{mode:"recipe", title, lines}',
   live: '{mode:"live", title?, value?} livestream / recording UI', game: '{mode:"game", title?} retro game',
+  image: '{mode:"image", src:"/assets/...png", zoom?, focus?:[x,y]} a screenshot on the screen',
 };
 export const LOOK_TARGETS = ['camera', 'screen', 'surface', 'phone', 'down', '<any cast id>'];
 
 // Beat fields that are not cast ids.
 export const BEAT_FIELDS = ['speaker', 'text', 'expr', 'action', 'look', 'shot', 'on', 'with', 'move', 'transition',
-  'time', 'timeFade', 'screen', 'title', 'duration', 'pad', 'audio', 'tts', 'fov', 'aperture', 'handheld'];
+  'time', 'timeFade', 'screen', 'title', 'card', 'duration', 'pad', 'audio', 'tts', 'fov', 'aperture', 'handheld'];
