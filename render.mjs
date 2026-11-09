@@ -378,7 +378,7 @@ if (musicFile) {
 }
 if (fxLabels.length) mixLabels.push(...fxLabels);
 if (mixLabels.length) {
-  filters.push(`${mixLabels.join('')}amix=inputs=${mixLabels.length}:normalize=0:duration=longest,apad,atrim=0:${(t1 - t0).toFixed(3)},alimiter=limit=0.95:level=false[aout]`);
+  filters.push(`${mixLabels.join('')}amix=inputs=${mixLabels.length}:normalize=0:duration=longest,apad,atrim=0:${(t1 - t0).toFixed(3)},loudnorm=I=-15:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.95:level=false[aout]`);
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', silent, ...inputs, '-filter_complex', filters.join(';'),
     '-map', '0:v', '-map', '[aout]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', outPath]);
 } else {
