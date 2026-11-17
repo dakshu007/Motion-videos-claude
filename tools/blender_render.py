@@ -175,8 +175,8 @@ def build_material(mid, d, geo_type):
             nodes['opmix'] = mix
         nt.links.new(tr.outputs[0], mix.inputs[1]); nt.links.new(shader, mix.inputs[2])
         shader = mix.outputs[0]
-    # Single-sided planes (three.js FrontSide) disappear when seen from behind.
-    if d['side'] == 0 and geo_type in ('PlaneGeometry', 'CircleGeometry', 'RingGeometry'):
+    # three.js FrontSide surfaces are invisible from behind (and from inside closed meshes).
+    if d['side'] == 0 and geo_type:
         geo = nt.nodes.new('ShaderNodeNewGeometry')
         tr2 = nt.nodes.new('ShaderNodeBsdfTransparent')
         mix2 = nt.nodes.new('ShaderNodeMixShader')
@@ -240,9 +240,9 @@ for od in S['objects']:
     if md['kind'] == 'shadow':
         key = od['mat'] + ':shadow'
     else:
-        key = od['mat'] + ('' if md['side'] != 0 or geo_type[od['geo']] not in ('PlaneGeometry', 'CircleGeometry', 'RingGeometry') else ':1s')
+        key = od['mat']
     if key not in mats:
-        mats[key] = build_material(od['mat'], md, geo_type[od['geo']] if key.endswith(':1s') else '')
+        mats[key] = build_material(od['mat'], md, 'mesh')
     me = meshes[od['geo']]
     ob = bpy.data.objects.new(od['name'], me)
     if not me.materials:
