@@ -1,0 +1,226 @@
+{
+  "title": "My client found my broken website before I did",
+  "set": "bedroom",
+  "time": "night",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "Claude! My client just called. At 11 PM. 'Why is my website broken?!'",
+      "tts": "[panicking, out of breath] Claude! My client just called. At eleven PM. [mimicking angry client] 'Why is my website broken?!'",
+      "expr": "shocked",
+      "action": "phone",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push"
+    },
+    {
+      "speaker": "claude",
+      "text": "Is it broken?",
+      "tts": "[calm, curious] Is it broken?",
+      "expr": "neutral",
+      "action": "tilt",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "I don't know! I found out from the client!",
+      "tts": "[frustrated] I don't know! I found out from the client!",
+      "expr": "annoyed",
+      "action": "facepalm",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "So your client... is your monitoring tool.",
+      "tts": "[deadpan] So your client... [beat] is your monitoring tool.",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "me": {
+        "expr": "shocked"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Not funny.",
+      "tts": "[sulking] Not funny.",
+      "expr": "sad",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "A little funny. Okay, this is why you need MyKavo.",
+      "tts": "[laughs] A little funny. [excited] Okay, this is why you need MyKavo!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "Meet MyKavo",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      },
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It scans every page of your sites and flags anything that changes.",
+      "tts": "[confident] It scans every page of your sites, and flags anything that changes.",
+      "expr": "happy",
+      "action": "bounce",
+      "shot": "screen",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/alerts-store.png"
+      },
+      "title": "1. Change alerts"
+    },
+    {
+      "speaker": "claude",
+      "text": "Missing button? Redesigned page? Links gone? You see it first, with before and after.",
+      "tts": "[energetic] Missing button? Redesigned page? Links gone? [satisfied] You see it first. With before and after.",
+      "expr": "determined",
+      "action": "nod",
+      "shot": "overShoulder",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/ba-button.png"
+      },
+      "title": "2. Before vs after"
+    },
+    {
+      "speaker": "me",
+      "text": "Even on my client's WordPress site?",
+      "tts": "[curious] Even on my client's WordPress site?",
+      "expr": "skeptical",
+      "action": "think",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "There's a WordPress plugin. And every alert is ranked, so you fix the critical stuff first.",
+      "tts": "[cheerful] There's a WordPress plugin! And every alert is ranked, so you fix the critical stuff first.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "medium",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/severity.png",
+        "width": 0.8
+      },
+      "title": "3. Critical first"
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. How much?",
+      "tts": "[suspicious] Okay. How much?",
+      "expr": "skeptical",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Free. Absolutely free.",
+      "tts": "[casually, then excited] Free. Absolutely free!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "tight",
+      "pad": 0.2,
+      "title": "100% FREE",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Free? Then why am I still awake?",
+      "tts": "[relieved laugh] Free? Then why am I still awake?",
+      "expr": "joy",
+      "action": "celebrate",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy",
+        "action": "dance"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Exactly. Next time, you call the client first.",
+      "tts": "[teasing] Exactly. Next time... you call the client first.",
+      "expr": "smug",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "joy"
+      }
+    }
+  ]
+}

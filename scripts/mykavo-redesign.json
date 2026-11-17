@@ -1,0 +1,253 @@
+{
+  "title": "Our website redesign killed our traffic",
+  "set": "park",
+  "time": "sunset",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "We launched our client's new website on Monday. By Friday, traffic dropped sixty percent.",
+      "tts": "[stressed] We launched our client's new website on Monday. By Friday... traffic dropped sixty percent.",
+      "expr": "worried",
+      "action": "facepalm",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push"
+    },
+    {
+      "speaker": "claude",
+      "text": "Let me guess. Nobody checked the old pages.",
+      "tts": "[knowing] Let me guess. Nobody checked the old pages.",
+      "expr": "skeptical",
+      "action": "tilt",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "sad"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "We checked the homepage.",
+      "tts": "[defensive, quiet] We checked the homepage.",
+      "expr": "sad",
+      "action": "shrug",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "One page. Out of how many?",
+      "tts": "[deadpan] One page. Out of how many?",
+      "expr": "skeptical",
+      "action": "lean",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "me": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Two hundred.",
+      "tts": "[mumbling] Two hundred.",
+      "expr": "crying",
+      "action": "lookDown",
+      "shot": "tight",
+      "pad": 0.2,
+      "claude": {
+        "expr": "shocked"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Bold. This is exactly what MyKavo is for.",
+      "tts": "[laughs] Bold. [excited] This is exactly what MyKavo is for!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "Meet MyKavo",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-issues.webp"
+      },
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It watches every page and catches what a redesign quietly breaks.",
+      "tts": "[confident] It watches every page, and catches what a redesign quietly breaks.",
+      "expr": "determined",
+      "action": "bounce",
+      "shot": "screen",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/alerts-redesign.png"
+      },
+      "title": "1. Every page, watched"
+    },
+    {
+      "speaker": "claude",
+      "text": "Changed redirects, missing links, wiped page titles. With before and after.",
+      "tts": "[energetic] Changed redirects. Missing links. Wiped page titles. [satisfied] With before and after.",
+      "expr": "happy",
+      "action": "nod",
+      "shot": "overShoulder",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/ba-title.png"
+      },
+      "title": "2. Before vs after"
+    },
+    {
+      "speaker": "me",
+      "text": "Would it have caught this on Monday?",
+      "tts": "[hopeful] Would it have caught this on Monday?",
+      "expr": "skeptical",
+      "action": "think",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Within a day. Sorted by how bad it is, so you fix the worst first.",
+      "tts": "[reassuring] Within a day. Sorted by how bad it is, so you fix the worst first.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "medium",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/severity.png",
+        "width": 0.8
+      },
+      "title": "3. Worst first"
+    },
+    {
+      "speaker": "me",
+      "text": "And if I don't speak SEO?",
+      "tts": "[sheepish] And if I don't speak SEO?",
+      "expr": "worried",
+      "action": "shrug",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy",
+        "action": "bounce"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "AI explains every issue in plain English, and how to fix it.",
+      "tts": "[warm] AI explains every issue in plain English. And how to fix it.",
+      "expr": "happy",
+      "action": "dance",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/trust.png"
+      },
+      "title": "4. AI fix guides"
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. Price. Hit me.",
+      "tts": "[bracing himself] Okay. Price. Hit me.",
+      "expr": "determined",
+      "action": "handsHips",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Zero. It's free.",
+      "tts": "[playful] Zero. It's free.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "pad": 0.2,
+      "title": "100% FREE",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "I'm telling the client it was a strategic traffic test.",
+      "tts": "[sly, confident] I'm telling the client it was a... strategic traffic test.",
+      "expr": "smug",
+      "action": "gesture",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "skeptical",
+        "action": "shake"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Or install MyKavo before the next launch.",
+      "tts": "[laughs] Or... install MyKavo before the next launch.",
+      "expr": "joy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "joy",
+        "action": "celebrate"
+      }
+    }
+  ]
+}

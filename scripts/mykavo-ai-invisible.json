@@ -1,0 +1,214 @@
+{
+  "title": "ChatGPT doesn't know my business exists",
+  "set": "office",
+  "time": "day",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "A customer asked ChatGPT for the best agencies in town. We weren't even mentioned.",
+      "tts": "[stunned, frustrated] A customer asked ChatGPT for the best agencies in town. We weren't even mentioned.",
+      "expr": "annoyed",
+      "action": "gesture",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push"
+    },
+    {
+      "speaker": "claude",
+      "text": "Ouch. Can AI even read your website?",
+      "tts": "[wincing] Ouch. [curious] Can AI even read your website?",
+      "expr": "worried",
+      "action": "tilt",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "skeptical"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Wait. AI has to read it?",
+      "tts": "[confused] Wait. AI has to read it?",
+      "expr": "shocked",
+      "action": "cheeks",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Yep. If AI bots can't read your site, they can't recommend you.",
+      "tts": "[matter-of-fact] Yep. If AI bots can't read your site... they can't recommend you.",
+      "expr": "smug",
+      "action": "nod",
+      "shot": "medium",
+      "pad": 0.2,
+      "me": {
+        "expr": "worried",
+        "action": "think"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Okay, how do I even check that?",
+      "tts": "[worried] Okay... how do I even check that?",
+      "expr": "worried",
+      "action": "shrug",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy",
+        "action": "hop"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "MyKavo. Its WordPress plugin shows which AI visits your pages. ChatGPT, Claude, Perplexity, Meta AI.",
+      "tts": "[excited] MyKavo! Its WordPress plugin shows which AI visits your pages. ChatGPT, Claude, Perplexity, Meta AI.",
+      "expr": "joy",
+      "action": "bounce",
+      "shot": "screen",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/ai-crawlers.png"
+      },
+      "title": "1. AI visitor tracking",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Which pages they read the most, and where they hit an error.",
+      "tts": "[pointing it out] Which pages they read the most. And where they hit an error.",
+      "expr": "determined",
+      "action": "lean",
+      "shot": "overShoulder",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/ai-errors.png"
+      },
+      "title": "2. Errors AI hits"
+    },
+    {
+      "speaker": "me",
+      "text": "Huh. And my normal SEO?",
+      "tts": "[intrigued] Huh. And my normal SEO?",
+      "expr": "skeptical",
+      "action": "lean",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Full site audit too. Health score, slow pages, missing pages, all explained in plain English.",
+      "tts": "[confident] Full site audit too. Health score, slow pages, missing pages. All explained in plain English.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/health.png"
+      },
+      "title": "3. Full site audit"
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. What's the catch?",
+      "tts": "[suspicious] Okay. What's the catch?",
+      "expr": "skeptical",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "No catch. It's free.",
+      "tts": "[casually] No catch. It's free.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "pad": 0.2,
+      "title": "100% FREE",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Free? I'm installing it right now.",
+      "tts": "[hyped] Free? I'm installing it right now!",
+      "expr": "joy",
+      "action": "typing",
+      "shot": "overShoulder",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy",
+        "action": "dance"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Good. Next time AI recommends someone, make it you.",
+      "tts": "[warm, teasing] Good. Next time AI recommends someone... make it you.",
+      "expr": "smug",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "joy",
+        "action": "celebrate"
+      }
+    }
+  ]
+}
