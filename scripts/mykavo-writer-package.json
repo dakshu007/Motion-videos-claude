@@ -128,7 +128,8 @@
       "shot": "tight",
       "pad": 0.2,
       "card": {
-        "src": "/assets/mykavo/w-grader.png"
+        "src": "/assets/mykavo/w-grader.png",
+        "y": 0.18
       },
       "claude": {
         "expr": "skeptical",
