@@ -1,0 +1,230 @@
+{
+  "title": "My AI plugin auto-published at 3 AM. Big mistake.",
+  "set": "cafe",
+  "time": "day",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "setOptions": {
+    "sign": "cakes"
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "My AI plugin auto-published a blog post at 3 AM. It says our wedding cakes are free!",
+      "tts": "[panicking] My AI plugin auto-published a blog post at three AM. It says our wedding cakes are free!",
+      "expr": "shocked",
+      "action": "cheeks",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push"
+    },
+    {
+      "speaker": "claude",
+      "text": "Did anyone read it before it went live?",
+      "tts": "[wincing] Did anyone read it before it went live?",
+      "expr": "worried",
+      "action": "tilt",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "The robot did.",
+      "tts": "[weakly] The robot did.",
+      "expr": "sad",
+      "action": "shrug",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "The robot isn't paying for those cakes.",
+      "tts": "[deadpan] The robot isn't paying for those cakes.",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "me": {
+        "expr": "crying",
+        "action": "facepalm"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "This is why MyKavo never publishes for you.",
+      "tts": "[reassuring, then excited] This is why MyKavo never publishes for you.",
+      "expr": "happy",
+      "action": "hop",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "Meet MyKavo",
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It writes the full post, then saves it to your WordPress drafts. You press publish, not a robot.",
+      "tts": "[confident] It writes the full post, then saves it to your WordPress drafts. You press publish. Not a robot.",
+      "expr": "determined",
+      "action": "nod",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-wpdraft.png"
+      },
+      "title": "1. Drafts, never auto-publish"
+    },
+    {
+      "speaker": "me",
+      "text": "But will it get my prices right?",
+      "tts": "[worried] But will it get my prices right?",
+      "expr": "worried",
+      "action": "think",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Review notes show which facts to check, and where your own experience goes.",
+      "tts": "[warm] Review notes show which facts to check... and where your own experience goes.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "medium",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-post.png"
+      },
+      "title": "2. Review notes"
+    },
+    {
+      "speaker": "me",
+      "text": "And it knows what people actually search?",
+      "tts": "[curious] And it knows what people actually search?",
+      "expr": "skeptical",
+      "action": "lean",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy",
+        "action": "bounce"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It finds searches you can win, like 'how much is a wedding cake'. Then checks page one before writing.",
+      "tts": "[energetic] It finds searches you can win, like 'how much is a wedding cake'. Then checks page one before writing.",
+      "expr": "joy",
+      "action": "bounce",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-keywords.png"
+      },
+      "title": "3. Real search data"
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. What does it cost?",
+      "tts": "[suspicious] Okay. What does it cost?",
+      "expr": "skeptical",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "One full post a month, free. The plugin's free too.",
+      "tts": "[casually] One full post a month, free. The plugin's free too.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-free.png",
+        "width": 0.7
+      },
+      "title": "FREE plan",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Free. Like my wedding cakes, apparently.",
+      "tts": "[dry, defeated] Free. Like my wedding cakes, apparently.",
+      "expr": "sad",
+      "action": "handsHips",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Too soon. Install MyKavo.",
+      "tts": "[laughs] Too soon. [warm] Install MyKavo.",
+      "expr": "joy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "annoyed",
+        "action": "facepalm"
+      }
+    }
+  ]
+}

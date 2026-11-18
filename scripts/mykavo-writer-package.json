@@ -1,0 +1,268 @@
+{
+  "title": "I hit publish. Claude said 'where's your FAQ?'",
+  "set": "studio",
+  "time": "night",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "My blog post is done! Two thousand words. Hitting publish!",
+      "tts": "[hyped] My blog post is done! Two thousand words. Hitting publish!",
+      "expr": "joy",
+      "action": "celebrate",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push"
+    },
+    {
+      "speaker": "claude",
+      "text": "Wait. Where's your meta description?",
+      "tts": "[alarmed] Wait! Where's your meta description?",
+      "expr": "shocked",
+      "action": "hop",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "neutral"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "My what?",
+      "tts": "[confused] My... what?",
+      "expr": "skeptical",
+      "action": "shrug",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "claude": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Slug? FAQ? Schema?",
+      "tts": "[rapid fire, increasingly worried] Slug? FAQ? Schema?",
+      "expr": "worried",
+      "action": "shake",
+      "shot": "close",
+      "pad": 0.2,
+      "me": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Are you even speaking English?",
+      "tts": "[confused, defensive] Are you even speaking English?",
+      "expr": "annoyed",
+      "action": "gesture",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "smug"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "You wrote an essay. Google wanted a package.",
+      "tts": "[deadpan] You wrote an essay. Google wanted a package.",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "me": {
+        "expr": "shocked"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Paste it into MyKavo's free draft grader.",
+      "tts": "[helpful] Paste it into MyKavo's free draft grader.",
+      "expr": "happy",
+      "action": "bounce",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "Meet MyKavo",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Forty-nine out of a hundred?!",
+      "tts": "[shocked, offended] Forty-nine out of a hundred?!",
+      "expr": "shocked",
+      "action": "cheeks",
+      "shot": "tight",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-grader.png"
+      },
+      "claude": {
+        "expr": "skeptical",
+        "action": "tilt"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Relax. MyKavo writes all eight parts in one click.",
+      "tts": "[laughs, reassuring] Relax. MyKavo writes all eight parts in one click.",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "medium",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-package.png",
+        "width": 0.86
+      },
+      "title": "1. All 8 parts",
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "A short answer up top. That's the part AI answers and Google snippets quote.",
+      "tts": "[confident] A short answer up top. That's the part AI answers and Google snippets quote.",
+      "expr": "determined",
+      "action": "nod",
+      "shot": "screen",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-post.png"
+      },
+      "title": "2. Answer first"
+    },
+    {
+      "speaker": "claude",
+      "text": "Plus an FAQ and JSON-LD schema, ready to paste. Most writers skip those.",
+      "tts": "[energetic] Plus an FAQ, and JSON-LD schema, ready to paste. Most writers skip those.",
+      "expr": "happy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "3. FAQ + schema",
+      "me": {
+        "expr": "neutral",
+        "action": "think"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Does it know what my business actually does?",
+      "tts": "[curious] Does it know what my business actually does?",
+      "expr": "skeptical",
+      "action": "think",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It reads your site first, then writes for your customers.",
+      "tts": "[warm] It reads your site first, then writes for your customers.",
+      "expr": "happy",
+      "action": "bounce",
+      "shot": "medium",
+      "pad": 0.2
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. Price?",
+      "tts": "[bracing] Okay. Price?",
+      "expr": "determined",
+      "action": "handsHips",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "One full post a month? Free.",
+      "tts": "[playful] One full post a month? Free.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-free.png",
+        "width": 0.7
+      },
+      "title": "FREE plan",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "So my two thousand words were...",
+      "tts": "[sheepish] So my two thousand words were...",
+      "expr": "sad",
+      "action": "lookDown",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "A very long first draft.",
+      "tts": "[laughs, teasing] A very long first draft.",
+      "expr": "joy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "annoyed",
+        "action": "facepalm"
+      }
+    }
+  ]
+}

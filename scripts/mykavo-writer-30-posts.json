@@ -1,0 +1,245 @@
+{
+  "title": "I published 30 AI blog posts. Traffic: zero.",
+  "set": "office",
+  "time": "day",
+  "musicMood": "upbeat",
+  "accent": "#f2b705",
+  "lead": 0.15,
+  "tail": 0.6,
+  "cast": {
+    "me": {
+      "type": "human",
+      "name": "Dakshu",
+      "hair": "short",
+      "hairColor": "#1f1712",
+      "skin": "#c98e6a",
+      "top": "#2f3b52",
+      "outfit": "hoodie",
+      "lashes": false,
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "TX3LPaxmHKxFdv7VOQHJ"
+      }
+    },
+    "claude": {
+      "type": "cube",
+      "name": "Claude",
+      "color": "#d97757",
+      "voice": {
+        "type": "elevenlabs",
+        "elevenlabs": "cgSgspJ2msm6clMCkdW9"
+      }
+    }
+  },
+  "beats": [
+    {
+      "speaker": "me",
+      "text": "I published thirty AI blog posts this month. Traffic? Zero.",
+      "tts": "[proud, then deflated] I published thirty AI blog posts this month. Traffic? [beat] Zero.",
+      "expr": "sad",
+      "action": "facepalm",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "screen": {
+        "mode": "stat",
+        "label": "Visitors this month",
+        "value": 0
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "What were they about?",
+      "tts": "[curious] What were they about?",
+      "expr": "neutral",
+      "action": "tilt",
+      "shot": "close",
+      "pad": 0.2,
+      "transition": "whip",
+      "me": {
+        "expr": "worried"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Whatever ChatGPT came up with.",
+      "tts": "[shrugging] Whatever ChatGPT came up with.",
+      "expr": "neutral",
+      "action": "shrug",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "So you wrote thirty posts... for nobody.",
+      "tts": "[deadpan] So you wrote thirty posts... [beat] for nobody.",
+      "expr": "smug",
+      "action": "proud",
+      "shot": "tight",
+      "pad": 0.2,
+      "move": "crash",
+      "me": {
+        "expr": "shocked"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "Rude. Accurate, but rude.",
+      "tts": "[sulking] Rude. Accurate... but rude.",
+      "expr": "annoyed",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "joy"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Let me show you how MyKavo picks what to write.",
+      "tts": "[laughs, then excited] Let me show you how MyKavo picks what to write!",
+      "expr": "joy",
+      "action": "hop",
+      "shot": "close",
+      "pad": 0.2,
+      "title": "Meet MyKavo",
+      "screen": {
+        "mode": "image",
+        "src": "/assets/mykavo/dashboard-audit.webp"
+      },
+      "me": {
+        "expr": "skeptical",
+        "action": "lean"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "It reads your Search Console and finds searches you already rank for on page two.",
+      "tts": "[confident] It reads your Search Console, and finds searches you already rank for... on page two.",
+      "expr": "happy",
+      "action": "bounce",
+      "shot": "screen",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-keywords.png"
+      },
+      "title": "1. Searches you can win"
+    },
+    {
+      "speaker": "me",
+      "text": "Page two? Nobody goes to page two.",
+      "tts": "[skeptical] Page two? Nobody goes to page two.",
+      "expr": "skeptical",
+      "action": "think",
+      "shot": "close",
+      "pad": 0.2,
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Exactly. One good post can push you to page one. Your fastest win.",
+      "tts": "[knowing] Exactly. One good post can push you to page one. Your fastest win.",
+      "expr": "smug",
+      "action": "nod",
+      "shot": "medium",
+      "pad": 0.2
+    },
+    {
+      "speaker": "claude",
+      "text": "Then it checks today's page one, so it knows exactly what it takes to beat them.",
+      "tts": "[energetic] Then it checks today's page one... so it knows exactly what it takes to beat them.",
+      "expr": "determined",
+      "action": "lean",
+      "shot": "overShoulder",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-pageone.png"
+      },
+      "title": "2. Checks page one first"
+    },
+    {
+      "speaker": "claude",
+      "text": "And one click writes the whole post. Title, meta, FAQ, schema. All of it.",
+      "tts": "[excited] And one click writes the whole post. Title, meta, FAQ, schema. All of it!",
+      "expr": "joy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-package.png",
+        "width": 0.86
+      },
+      "title": "3. One-click full post"
+    },
+    {
+      "speaker": "me",
+      "text": "Okay. How much?",
+      "tts": "[suspicious] Okay. How much?",
+      "expr": "skeptical",
+      "action": "armsCrossed",
+      "shot": "close",
+      "pad": 0.2,
+      "move": "push",
+      "claude": {
+        "expr": "smug",
+        "action": "proud"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "One full post a month is free. No card.",
+      "tts": "[casually] One full post a month is free. No card.",
+      "expr": "smug",
+      "action": "idle",
+      "shot": "tight",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-free.png",
+        "width": 0.7
+      },
+      "title": "FREE plan",
+      "me": {
+        "expr": "shocked",
+        "action": "cheeks"
+      }
+    },
+    {
+      "speaker": "me",
+      "text": "One post that ranks, versus thirty nobody reads.",
+      "tts": "[realizing] One post that ranks... versus thirty nobody reads.",
+      "expr": "neutral",
+      "action": "think",
+      "shot": "medium",
+      "pad": 0.2,
+      "claude": {
+        "expr": "happy",
+        "action": "nod"
+      }
+    },
+    {
+      "speaker": "claude",
+      "text": "Now you get it. Go delete the other twenty-nine.",
+      "tts": "[teasing, laughs] Now you get it. Go delete the other twenty-nine.",
+      "expr": "joy",
+      "action": "wiggle",
+      "shot": "close",
+      "pad": 0.2,
+      "card": {
+        "src": "/assets/mykavo/w-endcard.png",
+        "width": 0.8,
+        "y": 0.53
+      },
+      "me": {
+        "expr": "shocked",
+        "action": "facepalm"
+      }
+    }
+  ]
+}
